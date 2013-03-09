@@ -25,6 +25,7 @@ nbproject/private/
 .classpath
 .project
 .settings
+.user
 
 #ignore generated .class files
 *.class
