@@ -15,35 +15,24 @@
 
 #include <widgetcurvecontrol.h>
 
-#define BB_PLOT_SIZE 200
-#define BB_PLOT_NCURVES 3
+namespace Ui {
+    class MainWindow;
+}
 
 class GraphPlotter : public QwtPlot
 {
     Q_OBJECT
 public:
     explicit GraphPlotter(QObject *parent = 0);
-    void initialize();
-    void setEnableCurve(int curve, bool state);
+    void initialize(Ui::MainWindow *ui);
     void setCurveColor(int curve, QColor color);
     QColor getCurveColor(int curve);
 
 private:
-    QTimer m_timer;
-
-    struct {
-        double value[BB_PLOT_SIZE];
-        QwtPlotCurve *curve;
-    }m_data[BB_PLOT_NCURVES];
-
-    widgetCurveControl *curves[BB_PLOT_NCURVES];
-
-    double m_timeData[BB_PLOT_SIZE];
 
 signals:
     
 public slots:
-    void plot();
 
 };
 

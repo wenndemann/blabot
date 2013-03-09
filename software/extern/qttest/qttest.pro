@@ -21,12 +21,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     graphplotter.cpp \
     tcpip.cpp \
-    widgetcurvecontrol.cpp
+    widgetcurvecontrol.cpp \
+    plotmanager.cpp
 
 HEADERS  += mainwindow.h \
     graphplotter.h \
     tcpip.h \
     defs.h \
-    widgetcurvecontrol.h
+    widgetcurvecontrol.h \
+    plotmanager.h
 
 FORMS    += mainwindow.ui

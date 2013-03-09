@@ -13,9 +13,8 @@
 #include <qwt_symbol.h>
 #include <qwt_legend.h>
 
-#include "graphplotter.h"
 #include "tcpip.h"
-
+#include "plotmanager.h"
 namespace Ui {
 class MainWindow;
 }
@@ -29,18 +28,10 @@ public:
     ~MainWindow();
     
 private slots:
-    void on_checkBoxAccelX_clicked(bool checked);
-    void on_checkBoxAccelY_clicked(bool checked);
-    void on_checkBoxAccelZ_clicked(bool checked);    
-    void on_pushButtonAccelXColor_clicked();
-
-    void on_pushButtonAccelYColor_clicked();
-
-    void on_pushButtonAccelZColor_clicked();
 
 private:
     Ui::MainWindow *ui;
-
+    PlotManager *plotManager;
     TCPIP *pTcpIp;
 };
 

@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "graphplotter.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,12 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Graphplotter
-    ui->widgetPlot->initialize();
-    ui->widgetPlot->setEnableCurve(0,true);
-    ui->widgetPlot->setEnableCurve(1,true);
-    ui->widgetPlot->setEnableCurve(2,true);
+    plotManager = new PlotManager(ui);
 
     // MainWindow
+    /*
     QPalette pal;
     QColor color = ui->widgetPlot->getCurveColor(0);
     pal.setColor(ui->pushButtonAccelXColor->backgroundRole(), color);
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     color = ui->widgetPlot->getCurveColor(2);
     pal.setColor(ui->pushButtonAccelZColor->backgroundRole(), color);
-    ui->pushButtonAccelZColor->setPalette(pal);
+    ui->pushButtonAccelZColor->setPalette(pal);*/
 
     // TCP/IP
     pTcpIp = new TCPIP(this);
@@ -44,7 +44,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+/*
 void MainWindow::on_checkBoxAccelX_clicked(bool checked)
 {
     ui->widgetPlot->setEnableCurve(0,checked);
@@ -95,3 +95,4 @@ void MainWindow::on_pushButtonAccelZColor_clicked()
     sender->setPalette(pal);
     ui->widgetPlot->setCurveColor(2, color);
 }
+*/

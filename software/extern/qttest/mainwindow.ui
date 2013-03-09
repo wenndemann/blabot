@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>815</width>
+    <width>816</width>
     <height>610</height>
    </rect>
   </property>
@@ -172,67 +172,15 @@ right</string>
               <property name="title">
                <string>Accelerometer</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
-                <layout class="QGridLayout" name="gridLayoutAccel">
-                 <item row="1" column="0">
-                  <widget class="QCheckBox" name="checkBoxAccelY">
-                   <property name="text">
-                    <string>Y</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QCheckBox" name="checkBoxAccelZ">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="text">
-                    <string>Z</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QPushButton" name="pushButtonAccelYColor">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QPushButton" name="pushButtonAccelZColor">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="checkBoxAccelX">
-                   <property name="text">
-                    <string>X</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QPushButton" name="pushButtonAccelXColor">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="widgetCurveControl" name="widgetCurveControlAccelX" native="true"/>
+               </item>
+               <item>
+                <widget class="widgetCurveControl" name="widgetCurveControlAccelY" native="true"/>
+               </item>
+               <item>
+                <widget class="widgetCurveControl" name="widgetCurveControlAccelZ" native="true"/>
                </item>
               </layout>
              </widget>
@@ -260,31 +208,15 @@ right</string>
               <property name="title">
                <string>Magnetometer</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
-                <layout class="QGridLayout" name="gridLayout_5">
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="checkBoxMagX">
-                   <property name="text">
-                    <string>X</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QCheckBox" name="checkBoxMagY">
-                   <property name="text">
-                    <string>Y</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QCheckBox" name="checkBoxMagZ">
-                   <property name="text">
-                    <string>Z</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="widgetCurveControl" name="widgetCurveControlMagX" native="true"/>
+               </item>
+               <item>
+                <widget class="widgetCurveControl" name="widgetCurveControlMagY" native="true"/>
+               </item>
+               <item>
+                <widget class="widgetCurveControl" name="widgetCurveControlMagZ" native="true"/>
                </item>
               </layout>
              </widget>
@@ -294,20 +226,25 @@ right</string>
               <property name="title">
                <string>Potentiometer</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
-                <layout class="QGridLayout" name="gridLayout_6">
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="checkBoxPotiX">
-                   <property name="text">
-                    <string>X</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="widgetCurveControl" name="widgetCurveControlPoti" native="true"/>
                </item>
               </layout>
              </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -324,8 +261,8 @@ right</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>815</width>
-     <height>21</height>
+     <width>816</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -3,11 +3,13 @@
 
 #include <QWidget>
 #include <QCheckBox>
+#include <QColorDialog>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <qwt_plot_curve.h>
+#include "defs.h"
 
-#define BB_PLOT_DATA_LENGTH 200
+class GraphPlotter;
 
 class widgetCurveControl : public QWidget
 {
@@ -15,18 +17,36 @@ class widgetCurveControl : public QWidget
 public:
     explicit widgetCurveControl(QWidget *parent = 0);
     ~widgetCurveControl();
-    void setText(const std::string& text);
 
 private:
     QPushButton *button;
     QCheckBox *checkBox;
     QwtPlotCurve *curve;
+    GraphPlotter *m_pGraphPlotter;
     double value[BB_PLOT_DATA_LENGTH];
+    QColor m_qcolor;
+    QPixmap m_buttonPixmap;
 
 signals:
     
 public slots:
     void on_button_clicked();
+    void on_checkBox_toggled(bool val);
+
+public:
+    void setParams(GraphPlotter *pGraphPlotter, const QPen& pen, const std::string& text);
+    void setPen(const QPen& pen);
+    void setText(const std::string& text);
+    void setRawSamples(double *timeData, int length);
+    void shift();
+
+    void addNewVal(double val);
+
+    // TODO remove later
+    QwtPlotCurve* getCurvePtr() { return curve; }
+
+private:
+    void redrawButton();
     
 };
 

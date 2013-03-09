@@ -4,7 +4,12 @@
 #include <string>
 
 #define BB_TCPIP_PORT 6665
-#define BB_MSG_LENGTH 256
+#define BB_TCPIP_MSG_LENGTH 256
+
+#define BB_PLOT_NCURVES 3
+#define BB_PLOT_DATA_LENGTH 200
+#define BB_PLOT_READ_FPS 100
+#define BB_PLOT_REPLOT_FPS 30
 
 struct tcp_data {
     int newsockfd;
