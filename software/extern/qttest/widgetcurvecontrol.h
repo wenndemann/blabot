@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QCheckBox>
 #include <QColorDialog>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <qwt_plot_curve.h>
@@ -23,6 +24,7 @@ private:
     QCheckBox *checkBox;
     QwtPlotCurve *curve;
     GraphPlotter *m_pGraphPlotter;
+    bool m_bState;
     double value[BB_PLOT_DATA_LENGTH];
     QColor m_qcolor;
     QPixmap m_buttonPixmap;
@@ -32,6 +34,7 @@ signals:
 public slots:
     void on_button_clicked();
     void on_checkBox_toggled(bool val);
+    void on_groupbox_toogled(bool val);
 
 public:
     void setParams(GraphPlotter *pGraphPlotter, const QPen& pen, const std::string& text);

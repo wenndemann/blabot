@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>816</width>
-    <height>610</height>
+    <width>864</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -148,103 +148,206 @@ right</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayoutPlot">
+         <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="GraphPlotter" name="widgetPlot" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>640</width>
-              <height>480</height>
-             </size>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayoutPlot">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QSpinBox" name="spinBox">
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="spinBox_2">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="GraphPlotter" name="widgetPlot" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>640</width>
+                <height>480</height>
+               </size>
+              </property>
+              <zorder>pushButtonPausePlay</zorder>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QGroupBox" name="groupBoxAccel">
+                <property name="title">
+                 <string>Accelerometer</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlAccelX" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlAccelY" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlAccelZ" native="true"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxGyro">
+                <property name="title">
+                 <string>Gyroscope</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlGyroX" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlGyroY" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlGyroZ" native="true"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxMag">
+                <property name="title">
+                 <string>Magnetometer</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlMagX" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlMagY" native="true"/>
+                 </item>
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlMagZ" native="true"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxPoti">
+                <property name="title">
+                 <string>Potentiometer</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <widget class="widgetCurveControl" name="widgetCurveControlPoti" native="true"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <layout class="QHBoxLayout" name="horizontalLayoutPlotCtrl">
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>10</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
-             <widget class="QGroupBox" name="groupBoxAccel">
-              <property name="title">
-               <string>Accelerometer</string>
+             <widget class="QPushButton" name="pushButtonPausePlay">
+              <property name="text">
+               <string>Pause / Play</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlAccelX" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlAccelY" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlAccelZ" native="true"/>
-               </item>
-              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBoxGyro">
-              <property name="title">
-               <string>Gyroscope</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlGyroX" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlGyroY" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlGyroZ" native="true"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBoxMag">
-              <property name="title">
-               <string>Magnetometer</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_2">
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlMagX" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlMagY" native="true"/>
-               </item>
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlMagZ" native="true"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBoxPoti">
-              <property name="title">
-               <string>Potentiometer</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="widgetCurveControl" name="widgetCurveControlPoti" native="true"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer">
+             <spacer name="horizontalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_6">
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -261,7 +364,7 @@ right</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>816</width>
+     <width>864</width>
      <height>25</height>
     </rect>
    </property>

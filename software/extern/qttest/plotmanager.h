@@ -27,6 +27,7 @@ signals:
 
 private slots:
     void shift();
+    void pausePlay();
 
 public slots:
     

@@ -22,6 +22,7 @@ widgetCurveControl::widgetCurveControl(QWidget *parent)
 
     connect(this->button, SIGNAL(clicked()), this, SLOT(on_button_clicked()));
     connect(this->checkBox, SIGNAL(toggled(bool)), this, SLOT(on_checkBox_toggled(bool)));
+    connect(qobject_cast<QGroupBox*>(parent),SIGNAL(toggled(bool)),this, SLOT(on_groupbox_toogled(bool)));
 }
 
 widgetCurveControl::~widgetCurveControl() {
@@ -43,9 +44,17 @@ void widgetCurveControl::redrawButton() {
     button->setIconSize(m_buttonPixmap.size());
 }
 
+void widgetCurveControl::on_groupbox_toogled(bool val) {
+    if (!val)
+        curve->detach();
+    else if (m_bState)
+        curve->attach(m_pGraphPlotter);
+}
+
 void widgetCurveControl::on_checkBox_toggled(bool val) {
+    m_bState = val;
     if (m_pGraphPlotter) {
-        if(val)
+        if(m_bState)
             curve->attach(m_pGraphPlotter);
         else
             curve->detach();
