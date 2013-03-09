@@ -27,8 +27,10 @@ nbproject/private/
 .settings
 .user
 
-#ignore generated .class files
+#ignore generated files
 *.class
+moc_*
+ui_*.h
 
 #except this file
 !.gitignore
