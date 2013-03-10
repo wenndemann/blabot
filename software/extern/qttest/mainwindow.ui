@@ -454,7 +454,7 @@ right</string>
             <item>
              <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>No data read / s</string>
+               <string>No data shift / s</string>
               </property>
              </widget>
             </item>
