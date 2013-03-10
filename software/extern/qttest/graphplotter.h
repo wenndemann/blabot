@@ -15,16 +15,12 @@
 
 #include <widgetcurvecontrol.h>
 
-namespace Ui {
-    class MainWindow;
-}
-
 class GraphPlotter : public QwtPlot
 {
     Q_OBJECT
 public:
-    explicit GraphPlotter(QObject *parent = 0);
-    void initialize(Ui::MainWindow *ui);
+    explicit GraphPlotter();
+    void initialize();
     void setCurveColor(int curve, QColor color);
     QColor getCurveColor(int curve);
 

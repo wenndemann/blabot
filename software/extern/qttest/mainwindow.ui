@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
+    <width>894</width>
     <height>647</height>
    </rect>
   </property>
@@ -208,7 +208,6 @@ right</string>
                 <height>480</height>
                </size>
               </property>
-              <zorder>pushButtonPausePlay</zorder>
              </widget>
             </item>
             <item>
@@ -343,9 +342,9 @@ right</string>
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_6">
+             <widget class="QPushButton" name="pushButtonScreenshot">
               <property name="text">
-               <string>PushButton</string>
+               <string>Screenshot</string>
               </property>
              </widget>
             </item>
@@ -364,7 +363,7 @@ right</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>864</width>
+     <width>894</width>
      <height>25</height>
     </rect>
    </property>

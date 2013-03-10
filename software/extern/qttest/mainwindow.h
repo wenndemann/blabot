@@ -28,6 +28,7 @@ public:
     ~MainWindow();
     
 private slots:
+    void takeScreenshot();
 
 private:
     Ui::MainWindow *ui;

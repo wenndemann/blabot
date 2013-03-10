@@ -5,7 +5,7 @@
 PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
     QObject(parent)
 {
-    ui->widgetPlot->initialize(ui);
+    ui->widgetPlot->initialize();
     m_pGraphPlotter = ui->widgetPlot;
 
     m_timeData[0] = 0;
@@ -30,6 +30,7 @@ PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
 
 
     connect(ui->pushButtonPausePlay, SIGNAL(clicked()),this,SLOT(pausePlay()));
+
     connect(&m_timerPlot, SIGNAL(timeout()), m_pGraphPlotter, SLOT(replot()));      //connect timer to replot
     connect(&m_timerShift, SIGNAL(timeout()), this, SLOT(shift()));                 //connect timer to replot
     m_timerPlot.start(1000/BB_PLOT_REPLOT_FPS);                                     //start timer to replot
