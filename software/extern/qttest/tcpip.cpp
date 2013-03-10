@@ -22,7 +22,7 @@ void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    tcpData_s tcpData(sockfd);
+    tcpData_s tcpData(sockfd, plotManager);
 
     if (sockfd < 0)
     {
@@ -54,7 +54,7 @@ void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
         return;
     }
 
-    if (pthread_create(&g_threads[0], NULL, tcp_parse, &sockfd))
+    if (pthread_create(&g_threads[0], NULL, tcp_parse, &tcpData))
     {
         perror("Failed to create thread for TCP/IP parsing");
 
@@ -66,67 +66,34 @@ void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
 void* tcp_parse(void* arg)
 {
     // TCP IP CONNECTION
-    int n, sockfd;
-    //long gyroInt = 0;
-    sockfd = *((int*) arg);
-    //gnuplot_ctrl *h1;
-    double buf[9][BB_NUMPOINTS];
-
-    for(int i = 0; i < 9; i++)
-        bzero(buf[i], BB_NUMPOINTS);
-    //h1 = gnuplot_init();
-    //gnuplot_setstyle(h1, "lines");
-    //gnuplot_cmd(h1, "set yrange [-550:550]");
+    int n;
+    tcpData_s tcpData = *((tcpData_s*) arg);
 
     while(true)
     {
 
-        n = read(sockfd,(void*) &sensorData, sizeof(sensorData));
+        n = read(tcpData.sockfd,(void*) &sensorData, sizeof(sensorData));
         if (n < 0)
         {
             perror("ERROR reading from socket");
             return NULL;
         }
 
-        fprintf(stdout, "%f\n", (double) sensorData.accel[0]);
+        //fprintf(stdout, "%f\n", (double) sensorData.accel[0]);
 
-         /*
-        for(int i = 0; i < 9; i++)
-            memcpy(&buf[i][0], &buf[i][1], (BB_NUMPOINTS-1) * sizeof(double));
+        tcpData.plotManager->addNewValue(0,sensorData.accel[0]);
+        tcpData.plotManager->addNewValue(1,sensorData.accel[1]);
+        tcpData.plotManager->addNewValue(2,sensorData.accel[2]);
+        tcpData.plotManager->addNewValue(3,sensorData.gyro[0]);
+        tcpData.plotManager->addNewValue(4,sensorData.gyro[1]);
+        tcpData.plotManager->addNewValue(5,sensorData.gyro[2]);
+        tcpData.plotManager->addNewValue(6,sensorData.mag[0]);
+        tcpData.plotManager->addNewValue(7,sensorData.mag[1]);
+        tcpData.plotManager->addNewValue(8,sensorData.mag[2]);
+        //tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
 
-        gyroInt += sensorData.gyro[0]>>5;
-
-
-        buf[0][BB_NUMPOINTS-1] = (double) sensorData.accel[0];
-        buf[1][BB_NUMPOINTS-1] = (double) sensorData.accel[1];
-        buf[2][BB_NUMPOINTS-1] = (double) sensorData.accel[2];
-        buf[3][BB_NUMPOINTS-1] = (double) sensorData.gyro[0];
-        buf[4][BB_NUMPOINTS-1] = (double) gyroInt;
-        buf[5][BB_NUMPOINTS-1] = (double) sensorData.gyro[2];
-        buf[6][BB_NUMPOINTS-1] = (double) sensorData.mag[0];
-        buf[7][BB_NUMPOINTS-1] = (double) sensorData.mag[1];
-        buf[8][BB_NUMPOINTS-1] = (double) sensorData.mag[2];
-
-        gyroInt += (sensorData.gyro[0]>>5)+2;
-
-        gnuplot_resetplot(h1);
-        gnuplot_cmd(h1, "set yrange [-550:550]");
-
-        //gnuplot_plot_x(h1, buf[0], BB_NUMPOINTS, "accel_x");
-        gnuplot_plot_x(h1, buf[1], BB_NUMPOINTS, "accel_y");
-        gnuplot_plot_x(h1, buf[2], BB_NUMPOINTS, "accel_z");
-        gnuplot_plot_x(h1, buf[3], BB_NUMPOINTS, " gyro_x");
-        gnuplot_plot_x(h1, buf[4], BB_NUMPOINTS, " gyroInt");
-        //gnuplot_plot_x(h1, buf[5], BB_NUMPOINTS, " gyro_z");
-        //gnuplot_plot_x(h1, buf[6], BB_NUMPOINTS, "  mag_x");
-        //gnuplot_plot_x(h1, buf[7], BB_NUMPOINTS, "  mag_y");
-        //gnuplot_plot_x(h1, buf[8], BB_NUMPOINTS, "  mag_z");
-        */
 
     }
-
-
-    close(sockfd);
-
+    close(tcpData.sockfd);
     return NULL;
 }

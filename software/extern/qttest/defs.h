@@ -2,7 +2,6 @@
 #define DEFS_H
 
 #include <string>
-#include "plotmanager.h"
 
 #define BB_TCPIP_PORT 6665
 #define BB_TCPIP_MSG_LENGTH 256
@@ -12,20 +11,19 @@
 #define BB_PLOT_READ_FPS 100
 #define BB_PLOT_REPLOT_FPS 30
 
-
-struct lala {
-    PlotManager b;
-};
+class PlotManager;
 
 struct tcpData_s {
     int sockfd;
+    PlotManager *plotManager;
     std::string name;
 
     tcpData_s() {}
 
-    tcpData_s(int newsock)
+    tcpData_s(int newsock, PlotManager *pm)
     {
         sockfd = newsock;
+        plotManager = pm;
     }
 };
 

@@ -22,7 +22,8 @@ widgetCurveControl::widgetCurveControl(QWidget *parent)
     this->layout()->addWidget(button);
     this->layout()->addItem(new QSpacerItem(20,20,QSizePolicy::Preferred,QSizePolicy::Minimum));
 
-    bzero(value, sizeof(value));
+    m_value.reserve(BB_PLOT_DATA_LENGTH);
+    m_value.resize(BB_PLOT_DATA_LENGTH);
 
     connect(this->button, SIGNAL(clicked()), this, SLOT(on_button_clicked()));
     connect(this->checkBox, SIGNAL(toggled(bool)), this, SLOT(on_checkBox_toggled(bool)));
@@ -71,6 +72,7 @@ void widgetCurveControl::setParams(GraphPlotter *pGraphPlotter, const QPen& pen,
     setText(text);
     setPen(pen);
     on_checkBox_toggled(true);
+    on_groupbox_toogled(false);
 }
 
 void widgetCurveControl::setText(const std::string& text) {
@@ -84,14 +86,20 @@ void widgetCurveControl::setPen(const QPen& pen) {
     redrawButton();
 }
 
-void widgetCurveControl::setRawSamples(double *timeData, int length) {
-    curve->setRawSamples(timeData, value, length);
-}
-
-void widgetCurveControl::addNewVal(double val) {
-    value[0] = val;
+void widgetCurveControl::setRawSamples(std::vector<double>& timeData, int length) {
+    curve->setRawSamples((double*) timeData.data(), (double*) m_value.data(), length);
 }
 
 void widgetCurveControl::shift() {
-    memmove(&value[1], &value[0], sizeof(value)-sizeof(double));
+    m_value.pop_back();
+    m_value.insert(m_value.begin(), m_value.front());
+}
+
+void widgetCurveControl::addNewVal(double val) {
+    m_value[0] = val;
+}
+
+void widgetCurveControl::changeNValue(int val, std::vector<double>& timeData) {
+    m_value.resize(val,m_value.back());
+    curve->setRawSamples((double*) timeData.data(), (double*) m_value.data(), val);
 }

@@ -19,7 +19,7 @@ public:
 
 private:
     GraphPlotter *m_pGraphPlotter;
-    double m_timeData[BB_PLOT_DATA_LENGTH];
+    std::vector<double> m_timeData;
     std::vector<widgetCurveControl*> m_vecCurves;
 
     QTimer m_timerPlot;
@@ -29,8 +29,11 @@ signals:
 private slots:
     void shift();
     void pausePlay();
+    void changeGraphPlotterScaleXMin(int val);
     void changeGraphPlotterScaleYMin(int val);
     void changeGraphPlotterScaleYMax(int val);
+    void changeReplotFPS(int val);
+    void changeShiftsFPS(int val);
 
 public slots:
     

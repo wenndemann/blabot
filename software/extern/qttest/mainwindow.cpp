@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->spinBoxPlotScaleXMin->setValue(BB_PLOT_DATA_LENGTH);
+    ui->spinBoxDataShiftsPerSecond->setValue(BB_PLOT_READ_FPS);
+    ui->spinBoxPlotsPerSecond->setValue(BB_PLOT_REPLOT_FPS);
+
     // Graphplotter
     plotManager = new PlotManager(ui);
 

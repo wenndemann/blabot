@@ -14,7 +14,7 @@
 #include <math.h>
 
 
-#include "../../include/defs.h"
+#include "../../../include/defs.h"
 #include "i2c.h"
 #include "tools.h"
 // SERVER
@@ -133,21 +133,21 @@ void* i2c_sensor_read(void* arg) {
 		
 		i2c.receive(GYRO_ADDR, GYRO_X, &h, sizeof(h));
 		i2c.receive(GYRO_ADDR, GYRO_X + 1, &l, sizeof(l));
-		sensorData.gyro[0] = (((short) (l | (h << 8)))>>3)+1;
+		sensorData.gyro[0] = (((short) (l | (h << 8))));
 		
 		i2c.receive(GYRO_ADDR, GYRO_Y, &h, sizeof(h));
 		i2c.receive(GYRO_ADDR, GYRO_Y + 1, &l, sizeof(l));
-		sensorData.gyro[1] = (((short) (l | (h << 8)))>>0)+1;
+		sensorData.gyro[1] = (((short) (l | (h << 8))));
 		
 		i2c.receive(GYRO_ADDR, GYRO_Z, &h, sizeof(h));
 		i2c.receive(GYRO_ADDR, GYRO_Z + 1, &l, sizeof(l));
-		sensorData.gyro[2] = (((short) (l | (h << 8)))>>0)+1;
+		sensorData.gyro[2] = (((short) (l | (h << 8))));
 		
 		
 		
 		pthread_mutex_unlock(&g_mutex);
-		//printf("gyro \t  %d\n",bla);
-		usleep(100000);
+		//printf("gyro \t  %d\n",sensorData.accel[0]);
+		usleep(1000);
 	}
 	return NULL;
 }
@@ -174,7 +174,7 @@ void* tcp_accept_players(void* arg)
 		n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
 		pthread_mutex_unlock(&g_mutex);
 		if (n < 0) error("ERROR writing to socket");
-		usleep(1000000);
+		usleep(10000);
 	}
 
 	return NULL;

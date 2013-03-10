@@ -26,7 +26,7 @@ private:
     QwtPlotCurve *curve;
     GraphPlotter *m_pGraphPlotter;
     bool m_bState;
-    double value[BB_PLOT_DATA_LENGTH];
+    std::vector<double> m_value;
     QColor m_qcolor;
     QPixmap m_buttonPixmap;
 
@@ -41,10 +41,11 @@ public:
     void setParams(GraphPlotter *pGraphPlotter, const QPen& pen, const std::string& text);
     void setPen(const QPen& pen);
     void setText(const std::string& text);
-    void setRawSamples(double *timeData, int length);
+    void setRawSamples(std::vector<double>& timeData, int length);
 
     void shift();
     void addNewVal(double val);
+    void changeNValue(int val, std::vector<double>& timeData);
 
     // TODO remove later
     QwtPlotCurve* getCurvePtr() { return curve; }
