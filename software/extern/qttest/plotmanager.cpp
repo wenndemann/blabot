@@ -49,6 +49,7 @@ PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
     connect(ui->pushButtonPausePlay, SIGNAL(clicked()),this,SLOT(pausePlay()));
     connect(ui->spinBoxPlotScaleXMin, SIGNAL(valueChanged(int)), this, SLOT(changeGraphPlotterScaleXMin(int)));
     connect(ui->spinBoxPlotScaleYMin, SIGNAL(valueChanged(int)), this, SLOT(changeGraphPlotterScaleYMin(int)));
+    connect(ui->spinBoxPlotScaleYMax, SIGNAL(valueChanged(int)), this, SLOT(changeGraphPlotterScaleYMax(int)));
     connect(ui->spinBoxPlotsPerSecond, SIGNAL(valueChanged(int)), this, SLOT(changeReplotFPS(int)));
     connect(ui->spinBoxDataShiftsPerSecond, SIGNAL(valueChanged(int)), this, SLOT(changeShiftsFPS(int)));
 
