@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>894</width>
-    <height>647</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>blaplot</string>
@@ -18,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabControl">
        <attribute name="title">
@@ -163,9 +169,21 @@ right</string>
                <number>20</number>
               </property>
               <item>
-               <widget class="QSpinBox" name="spinBox">
+               <widget class="QSpinBox" name="spinBoxPlotScaleYMax">
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="minimum">
+                 <number>-999</number>
+                </property>
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+                <property name="value">
+                 <number>500</number>
                 </property>
                </widget>
               </item>
@@ -183,12 +201,24 @@ right</string>
                </spacer>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_2">
+               <widget class="QSpinBox" name="spinBoxPlotScaleYMin">
                 <property name="layoutDirection">
                  <enum>Qt::LeftToRight</enum>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="minimum">
+                 <number>-999</number>
+                </property>
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+                <property name="value">
+                 <number>-500</number>
                 </property>
                </widget>
               </item>
@@ -201,12 +231,6 @@ right</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>640</width>
-                <height>480</height>
-               </size>
               </property>
              </widget>
             </item>
@@ -221,6 +245,12 @@ right</string>
                  <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item>
                   <widget class="widgetCurveControl" name="widgetCurveControlAccelX" native="true"/>
                  </item>
@@ -242,6 +272,12 @@ right</string>
                  <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item>
                   <widget class="widgetCurveControl" name="widgetCurveControlGyroX" native="true"/>
                  </item>
@@ -263,6 +299,12 @@ right</string>
                  <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item>
                   <widget class="widgetCurveControl" name="widgetCurveControlMagX" native="true"/>
                  </item>
@@ -284,6 +326,12 @@ right</string>
                  <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item>
                   <widget class="widgetCurveControl" name="widgetCurveControlPoti" native="true"/>
                  </item>
@@ -363,7 +411,7 @@ right</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>894</width>
+     <width>800</width>
      <height>25</height>
     </rect>
    </property>

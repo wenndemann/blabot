@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // TCP/IP
     pTcpIp = new TCPIP(this);
-    connect(ui->pushButtonConnect, SIGNAL(clicked()), pTcpIp, SLOT(createConnection()));
+    connect(ui->pushButtonConnect, SIGNAL(clicked()), this, SLOT(tcpIpConnect()));
 
     // other connections
     connect(ui->pushButtonScreenshot, SIGNAL(clicked()), this, SLOT(takeScreenshot()));
@@ -39,4 +39,8 @@ void MainWindow::takeScreenshot()
     QString fileName(QFileDialog::getSaveFileName());
     if (!fileName.isEmpty())
         pixmap.save(fileName, "PNG");
+}
+
+void MainWindow::tcpIpConnect() {
+    pTcpIp->connect(ui->lineEditIP->text(), ui->spinBoxPort->value(), plotManager);
 }

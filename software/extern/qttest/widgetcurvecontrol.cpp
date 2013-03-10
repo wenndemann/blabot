@@ -12,11 +12,15 @@ widgetCurveControl::widgetCurveControl(QWidget *parent)
     curve = new QwtPlotCurve;
     m_pGraphPlotter = NULL;
 
+    button->setMaximumHeight(20);
+    button->setMaximumWidth(40);
     checkBox->setChecked(true);
 
     this->setLayout(new QHBoxLayout);
+    this->layout()->setContentsMargins(0,0,0,0);
     this->layout()->addWidget(checkBox);
     this->layout()->addWidget(button);
+    this->layout()->addItem(new QSpacerItem(20,20,QSizePolicy::Preferred,QSizePolicy::Minimum));
 
     bzero(value, sizeof(value));
 
@@ -36,7 +40,7 @@ void widgetCurveControl::on_button_clicked() {
 }
 
 void widgetCurveControl::redrawButton() {
-    m_buttonPixmap = QPixmap(60, 20);
+    m_buttonPixmap = QPixmap(35, 15);
     m_buttonPixmap.fill(m_qcolor);
     m_buttonPixmap.fill(m_qcolor);
     QIcon icon(m_buttonPixmap);

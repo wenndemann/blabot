@@ -7,6 +7,7 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QSpacerItem>
 #include <qwt_plot_curve.h>
 #include "defs.h"
 
@@ -41,8 +42,8 @@ public:
     void setPen(const QPen& pen);
     void setText(const std::string& text);
     void setRawSamples(double *timeData, int length);
-    void shift();
 
+    void shift();
     void addNewVal(double val);
 
     // TODO remove later

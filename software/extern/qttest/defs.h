@@ -2,24 +2,30 @@
 #define DEFS_H
 
 #include <string>
+#include "plotmanager.h"
 
 #define BB_TCPIP_PORT 6665
 #define BB_TCPIP_MSG_LENGTH 256
 
-#define BB_PLOT_NCURVES 3
+#define BB_PLOT_NCURVES 10
 #define BB_PLOT_DATA_LENGTH 200
 #define BB_PLOT_READ_FPS 100
 #define BB_PLOT_REPLOT_FPS 30
 
-struct tcp_data {
-    int newsockfd;
+
+struct lala {
+    PlotManager b;
+};
+
+struct tcpData_s {
+    int sockfd;
     std::string name;
 
-    tcp_data() {}
+    tcpData_s() {}
 
-    tcp_data(int newsock)
+    tcpData_s(int newsock)
     {
-        newsockfd = newsock;
+        sockfd = newsock;
     }
 };
 

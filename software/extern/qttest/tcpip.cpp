@@ -17,11 +17,12 @@ TCPIP::TCPIP(QObject *parent) :
 }
 
 //void TCPIP::createConnection(std::string strIp, int iPort)
-void TCPIP::createConnection()
+void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
 {
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0), portno = 6665; // TODO
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in serv_addr;
     struct hostent *server;
+    tcpData_s tcpData(sockfd);
 
     if (sockfd < 0)
     {
@@ -30,7 +31,7 @@ void TCPIP::createConnection()
     }
 
     //server = gethostbyname(strIp.c_str()); // TODO
-    server = gethostbyname("192.168.178.4");
+    server = gethostbyname(ip.toAscii());
     if (server == NULL)
     {
         perror("ERROR, no such host\n");
@@ -41,17 +42,22 @@ void TCPIP::createConnection()
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr,
         server->h_length);
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(port);
 
     if (::connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
     {
-        perror("ERROR connecting");
+        QMessageBox msgBox;
+        msgBox.setText(strerror(errno));
+        msgBox.setWindowTitle("TCP/IP connection error");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
         return;
     }
 
     if (pthread_create(&g_threads[0], NULL, tcp_parse, &sockfd))
     {
-        perror("Failed to create thread for video feed");
+        perror("Failed to create thread for TCP/IP parsing");
+
         return;
     }
 

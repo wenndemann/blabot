@@ -15,6 +15,7 @@ class PlotManager : public QObject
     Q_OBJECT
 public:
     explicit PlotManager(Ui::MainWindow *ui, QObject *parent = 0);
+    void addNewValue(int curve, double val);
 
 private:
     GraphPlotter *m_pGraphPlotter;
@@ -28,6 +29,8 @@ signals:
 private slots:
     void shift();
     void pausePlay();
+    void changeGraphPlotterScaleYMin(int val);
+    void changeGraphPlotterScaleYMax(int val);
 
 public slots:
     
