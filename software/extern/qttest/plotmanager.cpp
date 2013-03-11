@@ -60,6 +60,10 @@ PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
     connect(&m_timerShift, SIGNAL(timeout()), this, SLOT(shift()));                 //connect timer to replot
     m_timerPlot.start(1000/BB_PLOT_REPLOT_FPS);                                     //start timer to replot
     m_timerShift.start(1000/BB_PLOT_READ_FPS);                                      //start timer to replot
+
+    // pseudo data
+    m_bDrawPseudo = ui->groupBoxPseudo->isChecked();
+    connect(ui->groupBoxPseudo, SIGNAL(toggled(bool)), this, SLOT(setDrawPseudo(bool)));
 }
 
 void PlotManager::addNewValue(int curve, double val) {
@@ -67,17 +71,29 @@ void PlotManager::addNewValue(int curve, double val) {
 }
 
 void PlotManager::shift() {
-    static float i=0;
-    i+=0.03;
+
+    if (m_bDrawPseudo)
+    {
+        static float offset=0;
+        offset+=0.003;
+
+        for(unsigned int i = 0; i < m_vecCurves.size(); i++)                            //shift data in data array
+        {
+            if (m_vecCurves[i])
+                m_vecCurves[i]->addNewVal(sin(offset+(i*M_2PI)/m_vecCurves.size())*500);
+        }
+
+        //m_vecCurves[9]->addNewVal(sin(i)*250);                                          //add new value to data array
+        //m_vecCurves[1]->addNewVal(sin(i+M_2PI/3)*250);
+        //m_vecCurves[2]->addNewVal(sin(i+M_2PI/3*2)*250);
+    }
+
 
     for(unsigned int i = 0; i < m_vecCurves.size(); i++)                            //shift data in data array
     {
         if (m_vecCurves[i])
             m_vecCurves[i]->shift();
     }
-    //m_vecCurves[9]->addNewVal(sin(i)*250);                                          //add new value to data array
-    //m_vecCurves[1]->addNewVal(sin(i+M_2PI/3)*250);
-    //m_vecCurves[2]->addNewVal(sin(i+M_2PI/3*2)*250);
 }
 
 void PlotManager::pausePlay() {
@@ -114,4 +130,9 @@ void PlotManager::changePlotAreaSize(int val) {
 
 void PlotManager::changePlotArea(int val) {
     m_pGraphPlotter->setAxisScale(QwtPlot::xBottom, (BB_PLOT_DATA_LENGTH - val ) * -1, (BB_PLOT_DATA_LENGTH - val - m_plotDataLength) * -1);
+}
+
+// psuedo data
+void PlotManager::setDrawPseudo(bool bChecked) {
+    m_bDrawPseudo = bChecked;
 }
