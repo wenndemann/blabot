@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->spinBoxPlotScaleXMin->setValue(BB_PLOT_DATA_LENGTH);
+    ui->spinBoxPlotAreaSize->setValue(1000);
+    ui->horizontalScrollBarPlotArea->setMaximum(BB_PLOT_DATA_LENGTH - 1000);
+    ui->horizontalScrollBarPlotArea->setValue(BB_PLOT_DATA_LENGTH - 1000);
     ui->spinBoxDataShiftsPerSecond->setValue(BB_PLOT_READ_FPS);
     ui->spinBoxPlotsPerSecond->setValue(BB_PLOT_REPLOT_FPS);
 

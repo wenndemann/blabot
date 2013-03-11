@@ -98,8 +98,3 @@ void widgetCurveControl::shift() {
 void widgetCurveControl::addNewVal(double val) {
     m_value[0] = val;
 }
-
-void widgetCurveControl::changeNValue(int val, std::vector<double>& timeData) {
-    m_value.resize(val,m_value.back());
-    curve->setRawSamples((double*) timeData.data(), (double*) m_value.data(), val);
-}

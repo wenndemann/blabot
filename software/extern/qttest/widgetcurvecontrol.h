@@ -45,7 +45,6 @@ public:
 
     void shift();
     void addNewVal(double val);
-    void changeNValue(int val, std::vector<double>& timeData);
 
     // TODO remove later
     QwtPlotCurve* getCurvePtr() { return curve; }

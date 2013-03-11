@@ -2,6 +2,7 @@
 #define PLOTMANAGER_H
 
 #include <QObject>
+#include <QScrollBar>
 #include <QTimer>
 #include "graphplotter.h"
 #include "widgetcurvecontrol.h"
@@ -24,16 +25,20 @@ private:
 
     QTimer m_timerPlot;
     QTimer m_timerShift;
+    QScrollBar *m_scrollBarPlotArea;
+    long m_plotDataLength;
+
 signals:
 
 private slots:
     void shift();
     void pausePlay();
-    void changeGraphPlotterScaleXMin(int val);
     void changeGraphPlotterScaleYMin(int val);
     void changeGraphPlotterScaleYMax(int val);
     void changeReplotFPS(int val);
     void changeShiftsFPS(int val);
+    void changePlotAreaSize(int);
+    void changePlotArea(int val);
 
 public slots:
     
