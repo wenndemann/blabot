@@ -179,20 +179,37 @@ struct werte_s {
 void* tcp_accept_players(void* arg) 
 {
 	int n;
+	uint8_t buf[128];
 	tcp_data data = *((tcp_data*) arg);
 	
 	__MSG("user %d connected\n", data.newsockfd);
 	
-	while(true) 
-	{
-		//werte.a = (int16_t) ((rand() % 1000) - 500);
-		//werte.b = (int16_t) ((rand() % 500));
-		//werte.c = (int16_t) ((rand() % 100) - 200);
-		pthread_mutex_lock(&g_mutex);
-		n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
-		pthread_mutex_unlock(&g_mutex);
-		if (n < 0) error("ERROR writing to socket");
-		usleep(1000);
+	while(true) {
+		n = read(data.newsockfd, &buf, sizeof(buf));
+		if (n < 0) 
+			error("ERROR reading from socket");
+		else {
+			switch (buf[0]) {
+				case: 0			//send data
+					pthread_mutex_lock(&g_mutex);
+					n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
+					pthread_mutex_unlock(&g_mutex);
+					if (n < 0) error("ERROR writing to socket");
+					break;
+				case: 1			//set enable bits
+					pthread_mutex_lock(&g_mutex);
+					memcpy(&sensorData.enable, &buf[1], 2);
+					pthread_mutex_unlock(&g_mutex);
+					break;
+				case: 2			//set i2c read interval, if 0 stop
+
+					break;
+				default:		//no command recognized
+			}
+
+		}
+
+		//usleep(10000);
 	}
 
 	return NULL;
