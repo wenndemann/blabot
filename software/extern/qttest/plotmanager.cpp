@@ -77,15 +77,11 @@ void PlotManager::shift() {
         static float offset=0;
         offset+=0.003;
 
-        for(unsigned int i = 0; i < m_vecCurves.size(); i++)                            //shift data in data array
+        for(unsigned int i = 0; i < m_vecCurves.size(); i++)
         {
             if (m_vecCurves[i])
                 m_vecCurves[i]->addNewVal(sin(offset+(i*M_2PI)/m_vecCurves.size())*500);
         }
-
-        //m_vecCurves[9]->addNewVal(sin(i)*250);                                          //add new value to data array
-        //m_vecCurves[1]->addNewVal(sin(i+M_2PI/3)*250);
-        //m_vecCurves[2]->addNewVal(sin(i+M_2PI/3*2)*250);
     }
 
 
@@ -122,10 +118,13 @@ void PlotManager::changeShiftsFPS(int val) {
 
 void PlotManager::changePlotAreaSize(int val) {
     double tmp = m_scrollBarPlotArea->value() / m_scrollBarPlotArea->maximum();
+    int iLastDiff = m_scrollBarPlotArea->maximum() - m_scrollBarPlotArea->value();
     m_plotDataLength = val;
     m_scrollBarPlotArea->setMaximum(BB_PLOT_DATA_LENGTH - val);
     m_scrollBarPlotArea->setMinimum(0);
-    m_pGraphPlotter->setAxisScale(QwtPlot::xBottom, (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() ) * -1, (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() - m_plotDataLength) * -1);
+    //m_pGraphPlotter->setAxisScale(QwtPlot::xBottom, (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() ) * -1,
+    //                             (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() - m_plotDataLength) * -1);
+    m_scrollBarPlotArea->setSliderPosition(m_scrollBarPlotArea->maximum() - iLastDiff);
 }
 
 void PlotManager::changePlotArea(int val) {
