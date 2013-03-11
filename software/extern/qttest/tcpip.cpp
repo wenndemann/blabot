@@ -90,7 +90,7 @@ void* tcp_parse(void* arg)
         tcpData.plotManager->addNewValue(6,sensorData.mag[0]);
         tcpData.plotManager->addNewValue(7,sensorData.mag[1]);
         tcpData.plotManager->addNewValue(8,sensorData.mag[2]);
-        //tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
+        tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
 
 
     }

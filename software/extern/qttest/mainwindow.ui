@@ -161,14 +161,28 @@ right</string>
              <number>0</number>
             </property>
             <item>
-             <widget class="GraphPlotter" name="widgetPlot" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="GraphPlotter" name="widgetPlot" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QScrollBar" name="horizontalScrollBarPlotArea">
+                <property name="maximum">
+                 <number>0</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayoutCurves">
@@ -400,12 +414,12 @@ right</string>
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBoxPlotScaleXMin">
+             <widget class="QSpinBox" name="spinBoxPlotAreaSize">
               <property name="minimum">
                <number>1</number>
               </property>
               <property name="maximum">
-               <number>99999</number>
+               <number>100000</number>
               </property>
               <property name="singleStep">
                <number>100</number>
