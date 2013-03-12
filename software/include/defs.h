@@ -1,3 +1,5 @@
+#ifndef DEFS_H_
+#define DEFS_H_
 
 #include <string>
 
@@ -50,4 +52,4 @@ struct sensorData_s {
 	uint16_t enable;	
 };
 
-
+#endif

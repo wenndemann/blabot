@@ -63,7 +63,7 @@ PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
 
     // pseudo data
     m_bDrawPseudo = ui->groupBoxPseudo->isChecked();
-    connect(ui->groupBoxPseudo, SIGNAL(toggled(bool)), this, SLOT(setDrawPseudo(bool)));
+    connect(ui->checkBoxPseudo, SIGNAL(toggled(bool)), this, SLOT(setDrawPseudo(bool)));
 }
 
 void PlotManager::addNewValue(int curve, double val) {
@@ -117,13 +117,10 @@ void PlotManager::changeShiftsFPS(int val) {
 }
 
 void PlotManager::changePlotAreaSize(int val) {
-    double tmp = m_scrollBarPlotArea->value() / m_scrollBarPlotArea->maximum();
     int iLastDiff = m_scrollBarPlotArea->maximum() - m_scrollBarPlotArea->value();
     m_plotDataLength = val;
     m_scrollBarPlotArea->setMaximum(BB_PLOT_DATA_LENGTH - val);
     m_scrollBarPlotArea->setMinimum(0);
-    //m_pGraphPlotter->setAxisScale(QwtPlot::xBottom, (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() ) * -1,
-    //                             (BB_PLOT_DATA_LENGTH - m_scrollBarPlotArea->value() - m_plotDataLength) * -1);
     m_scrollBarPlotArea->setSliderPosition(m_scrollBarPlotArea->maximum() - iLastDiff);
 }
 
