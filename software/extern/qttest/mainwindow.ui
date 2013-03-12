@@ -36,7 +36,7 @@
           <x>120</x>
           <y>50</y>
           <width>278</width>
-          <height>108</height>
+          <height>109</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -304,6 +304,19 @@ right</string>
                </widget>
               </item>
               <item>
+               <widget class="QGroupBox" name="groupBoxPseudo">
+                <property name="title">
+                 <string>Pseudo values</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -538,7 +551,7 @@ right</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

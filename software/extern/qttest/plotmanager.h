@@ -28,6 +28,9 @@ private:
     QScrollBar *m_scrollBarPlotArea;
     long m_plotDataLength;
 
+    // psuedo data
+    bool m_bDrawPseudo;
+
 signals:
 
 private slots:
@@ -39,6 +42,9 @@ private slots:
     void changeShiftsFPS(int val);
     void changePlotAreaSize(int);
     void changePlotArea(int val);
+
+    // psuedo data
+    void setDrawPseudo(bool);
 
 public slots:
     
