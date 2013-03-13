@@ -49,7 +49,6 @@ struct sensorData_s {
 	int16_t gyro[3];
 	int16_t mag[3];
 	int8_t poti;
-	uint16_t enable;	
 };
 
 #endif

@@ -4,7 +4,7 @@ SRCDIR := src
 INCLUDE := include
 DEBUG := -g -ggdb
 CFLAGS := -Wall -I$(INCLUDE) -O3 -fmessage-length=0 $(DEBUG)
-LDFLAGS := -pthread -lrt -lm
+LDFLAGS := -pthread -lrt -lm -lboost_system
 CC := arm-linux-gnueabi-g++
 #CC := g++
 SCP := scp

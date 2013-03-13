@@ -28,6 +28,7 @@
 
 pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t g_threads[SEMM_NUM_THREADS];
+pthread_t g_thread_timer;
 
 sensorData_s sensorData;
 I2c i2c("/dev/i2c-0");
@@ -79,7 +80,10 @@ int main(int argc, char** argv)
   initTimer();
   printf("timer set\n");
   setTimer(10);
-
+  printf("timer ready\n");
+  
+  //initHardware();
+  
 
 	while(true) {
 		
@@ -131,21 +135,19 @@ void* tcp_accept_players(void* arg)
 	__MSG("user %d connected\n", data.newsockfd);
 	
 	while(true) {
-		n = read(data.newsockfd, &buf, sizeof(buf));
+		/*n = read(data.newsockfd, &buf, sizeof(buf));
 		if (n < 0) 
 			error("ERROR reading from socket");
 		else {
 			switch (buf[0]) {
-				case 0: 			//send data
+				case 0: 			//send data*/
 					pthread_mutex_lock(&g_mutex);
 					n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
 					pthread_mutex_unlock(&g_mutex);
-					if (n < 0) error("ERROR writing to socket");
+					/*if (n < 0) error("ERROR writing to socket");
 					break;
 				case 1: 			//set enable bits
-					pthread_mutex_lock(&g_mutex);
-					memcpy(&sensorData.enable, &buf[1], 2);
-					pthread_mutex_unlock(&g_mutex);
+
 					break;
 				case 2: 			//set i2c read interval, if 0 stop
 
@@ -154,9 +156,8 @@ void* tcp_accept_players(void* arg)
 				  break;
 			}
 
-		}
-
-		//usleep(10000);
+		}*/
+	usleep(10000);
 	}
 
 	return NULL;
