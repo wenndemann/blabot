@@ -1,0 +1,28 @@
+TODO
+
+_______________________________________________________________________________
+Ideen:
+
+_______________________________________________________________________________
+Fragen:
+
+_______________________________________________________________________________
+RPI ServerSensor
+
+- eine Klasse Sensor von der in der main ein Objekt erzeugt wird
+  Darin läuft ein timer der den sensor ausliest
+
+- Pro client der sich verbindet werden 2 threads aufgemacht
+  einer zum senden der daten und einer der auf Nachrichten vom client wartet
+  Zum senden der Daten hat der client einen pointer auf die server instanz
+  -> gut mit mutex beim senden und auslesen und zwischen den beiden threads 
+  aufpassen
+
+- in der main gibt es dann eine map mit key = filedescriptor von client
+  und value = ptr auf client. Evt später auch für das spiel eine zusätzliche
+  map mit id zu descriptor falls mehrere ids hinter einer Verbindung sind. 
+  -> muss man schauen wo die map gespeichert wird, ob in serverSensor oder in 
+  der main oder wo. 
+
+- von pthreads auf boost threads evt umsteigen, da dann nicht mehr mit void 
+  pointern gearbeitet werden muss -> sicherer
