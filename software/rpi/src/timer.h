@@ -14,7 +14,7 @@
 #include <netinet/in.h>
 
 #include "i2c.h"
-#include "../../../include/defs.h"
+#include "defs.h"
 
 #define SIG_NUM 	SIGUSR1
 

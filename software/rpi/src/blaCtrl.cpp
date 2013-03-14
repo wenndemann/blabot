@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #include <unistd.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
@@ -17,7 +17,7 @@
 //#include <time.h>
 
 
-#include "../../../include/defs.h"
+#include "defs.h"
 
 #include "tools.h"
 #include "timer.h"
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 
 	// intialize server
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) 
+	if (sockfd < 0)
 	error("ERROR opening socket");
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	portno = SEMM_TCPIP_PORT;
@@ -70,9 +70,9 @@ int main(int argc, char** argv)
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(portno);
 
-	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
+	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
 		error("ERROR on binding");
-	
+
 	if(pthread_mutex_init(&g_mutex, NULL))
 		error("Faild to initialize mutex");
 
@@ -81,22 +81,22 @@ int main(int argc, char** argv)
   printf("timer set\n");
   setTimer(10);
   printf("timer ready\n");
-  
+
   //initHardware();
-  
+
 
 	while(true) {
-		
+
 		// TODO accept multiple users
 		// waiting for clients
 		listen(sockfd,5);
 		clilen = sizeof(cli_addr);
-		
+
 		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
 		tcp_data data(newsockfd);
 		mapTcpData[numAcceptions] = data;
 
-		//if (newsockfd < 0) 
+		//if (newsockfd < 0)
 		//  error("ERROR on accept");
 
     if (newsockfd == -1) {
@@ -110,10 +110,10 @@ int main(int argc, char** argv)
     }
 
 
-		if (pthread_create(&g_threads[numAcceptions], NULL, tcp_accept_players, 
+		if (pthread_create(&g_threads[numAcceptions], NULL, tcp_accept_players,
 			(void*) &mapTcpData[numAcceptions]))
         { error("Failed to create user acceptance thread"); }
-		
+
 		numAcceptions++;
 		if (numAcceptions >= SEMM_NUM_THREADS)
 			close(newsockfd);
@@ -121,22 +121,22 @@ int main(int argc, char** argv)
 
 	close(sockfd);
 	while(1);
-		
-	return 0; 
+
+	return 0;
 }
 
 
-void* tcp_accept_players(void* arg) 
+void* tcp_accept_players(void* arg)
 {
 	int n;
 	uint8_t buf[128];
 	tcp_data data = *((tcp_data*) arg);
-	
+
 	__MSG("user %d connected\n", data.newsockfd);
-	
+
 	while(true) {
 		/*n = read(data.newsockfd, &buf, sizeof(buf));
-		if (n < 0) 
+		if (n < 0)
 			error("ERROR reading from socket");
 		else {
 			switch (buf[0]) {
