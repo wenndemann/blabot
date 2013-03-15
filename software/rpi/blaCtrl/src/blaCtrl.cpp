@@ -21,6 +21,7 @@
 
 #include "tools.h"
 #include "timer.h"
+#include "Sensor.h"
 // SERVER
 
 #define SEMM_NUM_THREADS 8
@@ -29,9 +30,7 @@
 pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t g_threads[SEMM_NUM_THREADS];
 pthread_t g_thread_timer;
-
-sensorData_s sensorData;
-I2c i2c("/dev/i2c-0");
+Sensor g_sensor("/dev/i2c-0", &g_mutex);
 
 void* tcp_accept_players(void* arg);
 
@@ -52,6 +51,8 @@ int main(int argc, char** argv)
 
 	if (system("clear") != 0) //Bildschrirm löschen
 		error("clear failed!");
+
+	//g_sensor.setMeasuringInterval(1000);
 
 	int sockfd, newsockfd, portno;
 	std::map<int, tcp_data> mapTcpData;
@@ -77,9 +78,9 @@ int main(int argc, char** argv)
 		error("Faild to initialize mutex");
 
   printf("timer init\n");
-  initTimer();
+  //initTimer();
   printf("timer set\n");
-  setTimer(10);
+  //setTimer(10);
   printf("timer ready\n");
 
   //initHardware();
@@ -141,9 +142,9 @@ void* tcp_accept_players(void* arg)
 		else {
 			switch (buf[0]) {
 				case 0: 			//send data*/
-					pthread_mutex_lock(&g_mutex);
-					n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
-					pthread_mutex_unlock(&g_mutex);
+					//pthread_mutex_lock(&g_mutex);
+					//n = write(data.newsockfd, (void*) &sensorData , sizeof(sensorData));
+					//pthread_mutex_unlock(&g_mutex);
 					/*if (n < 0) error("ERROR writing to socket");
 					break;
 				case 1: 			//set enable bits
