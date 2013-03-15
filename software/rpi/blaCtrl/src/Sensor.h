@@ -29,6 +29,7 @@ public:
 	virtual ~Sensor();
 
 	void setMeasuringInterval(int intervalMs);
+	sensorData_s* getSensorData() {return &m_sensorData;}
 
 private:
 	I2c *m_i2cConnection;
@@ -37,10 +38,10 @@ private:
 	pthread_mutex_t *m_mutex;
 	int m_intervalMs;
 
-	void* callbackTimer(void* arg);
-	void readDataSensor(boost::asio::deadline_timer* t);
-	void swapInt16(int16_t &inout);
-	void initHardware();
+	void* m_callbackTimer(void* arg);
+	void m_readDataSensor(boost::asio::deadline_timer* t);
+	void m_swapInt16(int16_t &inout);
+	void m_initHardware();
 };
 
 #endif /* SENSOR_H_ */

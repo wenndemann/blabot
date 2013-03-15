@@ -20,7 +20,6 @@
 #include "defs.h"
 
 #include "tools.h"
-#include "timer.h"
 #include "Sensor.h"
 // SERVER
 
@@ -52,7 +51,7 @@ int main(int argc, char** argv)
 	if (system("clear") != 0) //Bildschrirm löschen
 		error("clear failed!");
 
-	//g_sensor.setMeasuringInterval(1000);
+	//g_sensor.m_setMeasuringInterval(1000);
 
 	int sockfd, newsockfd, portno;
 	std::map<int, tcp_data> mapTcpData;

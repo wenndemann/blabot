@@ -7,21 +7,18 @@ CPP_SRCS += \
 ../src/Sensor.cpp \
 ../src/blaCtrl.cpp \
 ../src/i2c.cpp \
-../src/timer.cpp \
 ../src/tools.cpp 
 
 OBJS += \
 ./src/Sensor.o \
 ./src/blaCtrl.o \
 ./src/i2c.o \
-./src/timer.o \
 ./src/tools.o 
 
 CPP_DEPS += \
 ./src/Sensor.d \
 ./src/blaCtrl.d \
 ./src/i2c.d \
-./src/timer.d \
 ./src/tools.d 
 
 
