@@ -30,6 +30,7 @@ public:
 private slots:
     void takeScreenshot();
     void tcpIpConnect();
+    void tcpIpDisconnect();
 private:
     Ui::MainWindow *ui;
     PlotManager *plotManager;

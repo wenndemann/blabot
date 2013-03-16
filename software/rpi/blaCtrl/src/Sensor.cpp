@@ -17,6 +17,7 @@ Sensor::Sensor() {
 Sensor::Sensor(const char* devName, pthread_mutex_t *mutex) {
 	m_i2cConnection = new I2c(devName);
 	m_mutex = mutex;
+	printf("size of sensorData: %d\n", sizeof(m_sensorData));
 }
 
 Sensor::~Sensor() {
@@ -62,7 +63,7 @@ void Sensor::m_readDataSensor(boost::asio::deadline_timer* t) {
 		pthread_mutex_unlock(m_mutex);
 		t->expires_at(t->expires_at() + boost::posix_time::milliseconds(m_intervalMs));
 		t->async_wait(boost::bind(&Sensor::m_readDataSensor, this, t));
-		printf("gyro: %d\n",m_sensorData.gyro[0]); //TODO remove this line after commissioning
+		//printf("gyro: %d\n",m_sensorData.gyro[0]); //TODO remove this line after commissioning
 	}
 }
 

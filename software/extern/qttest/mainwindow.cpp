@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // TCP/IP
     pTcpIp = new TCPIP(this);
     connect(ui->pushButtonConnect, SIGNAL(clicked()), this, SLOT(tcpIpConnect()));
+    connect(ui->pushButtonDisconnect, SIGNAL(clicked()), this, SLOT(tcpIpDisconnect()));
 
     // other connections
     connect(ui->pushButtonScreenshot, SIGNAL(clicked()), this, SLOT(takeScreenshot()));
@@ -49,4 +50,8 @@ void MainWindow::takeScreenshot()
 
 void MainWindow::tcpIpConnect() {
     pTcpIp->connect(ui->lineEditIP->text(), ui->spinBoxPort->value(), plotManager);
+}
+
+void MainWindow::tcpIpDisconnect() {
+    pTcpIp->disconnect();
 }

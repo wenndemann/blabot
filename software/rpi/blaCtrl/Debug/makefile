@@ -55,7 +55,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-sshpass -p pk7svh0k scp blaCtrl root@semmbox.local:/usr/local/bin; ../debug.sh &
+	-sshpass -p pk7svh0k scp blaCtrl root@semmbox.local:/usr/local/bin;
 	-@echo ' '
 
 .PHONY: all clean dependents

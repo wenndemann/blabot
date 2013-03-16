@@ -24,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabControl">
        <attribute name="title">
@@ -96,7 +96,7 @@ right</string>
           <x>10</x>
           <y>10</y>
           <width>187</width>
-          <height>123</height>
+          <height>156</height>
          </rect>
         </property>
         <property name="title">
@@ -142,6 +142,13 @@ right</string>
           <widget class="QPushButton" name="pushButtonConnect">
            <property name="text">
             <string>connect</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonDisconnect">
+           <property name="text">
+            <string>disconnect</string>
            </property>
           </widget>
          </item>

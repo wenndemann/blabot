@@ -32,14 +32,15 @@ class TCPIP : public QObject
 public:
     explicit TCPIP(QObject *parent = 0);
     void connect(const QString& ip, int port, PlotManager *plotManager);
+    void disconnect();
+
 signals:
     
 public slots:
-    //void createConnection(std::string strIp, int iPort);
-
 
 private:
-
+    int m_fd;
+    bool m_isConnected;
     
 };
 
