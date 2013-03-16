@@ -47,13 +47,18 @@ blaCtrl: $(OBJS) $(USER_OBJS)
 	arm-linux-gnueabi-g++ -pthread -lrt -lm -lboost_system -o "blaCtrl" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) blaCtrl
 	-@echo ' '
 
+post-build:
+	-sshpass -p pk7svh0k scp blaCtrl root@semmbox.local:/usr/local/bin; ../debug.sh &
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets

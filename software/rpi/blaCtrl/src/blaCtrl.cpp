@@ -47,12 +47,9 @@ void error(const char *msg)
 
 int main(int argc, char** argv)
 {
-
-	if (system("clear") != 0) //Bildschrirm löschen
-		error("clear failed!");
-
-	//g_sensor.m_setMeasuringInterval(1000);
-
+	printf("timer init\n");
+	g_sensor.setMeasuringInterval(100);
+	sleep(5);
 	int sockfd, newsockfd, portno;
 	std::map<int, tcp_data> mapTcpData;
 	socklen_t clilen;
@@ -75,15 +72,6 @@ int main(int argc, char** argv)
 
 	if(pthread_mutex_init(&g_mutex, NULL))
 		error("Faild to initialize mutex");
-
-  printf("timer init\n");
-  //initTimer();
-  printf("timer set\n");
-  //setTimer(10);
-  printf("timer ready\n");
-
-  //initHardware();
-
 
 	while(true) {
 

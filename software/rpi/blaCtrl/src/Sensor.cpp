@@ -62,7 +62,7 @@ void Sensor::m_readDataSensor(boost::asio::deadline_timer* t) {
 		pthread_mutex_unlock(m_mutex);
 		t->expires_at(t->expires_at() + boost::posix_time::milliseconds(m_intervalMs));
 		t->async_wait(boost::bind(&Sensor::m_readDataSensor, this, t));
-		//printf("poti: %d\n",m_sensorData.gyro[0]); TODO remove this line after commissioning
+		printf("gyro: %d\n",m_sensorData.gyro[0]); //TODO remove this line after commissioning
 	}
 }
 

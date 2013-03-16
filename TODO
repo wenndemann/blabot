@@ -8,13 +8,10 @@ Fragen:
 
 _______________________________________________________________________________
 RPI ServerSensor
-
-- eine Klasse Sensor von der in der main ein Objekt erzeugt wird
-  Darin läuft ein timer der den sensor ausliest
-
+cd 
 - Pro client der sich verbindet werden 2 threads aufgemacht
   einer zum senden der daten und einer der auf Nachrichten vom client wartet
-  Zum senden der Daten hat der client einen pointer auf die server instanz
+  Zum senden der Daten hat der client einen pointer auf die Sensor Daten
   -> gut mit mutex beim senden und auslesen und zwischen den beiden threads 
   aufpassen
 
