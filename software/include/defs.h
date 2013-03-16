@@ -3,9 +3,10 @@
 
 #include <string>
 
-#define SEMM_TCPIP_PORT 6665
-#define SEMM_MSG_LENGTH 256
 
+//#define SEMM_MSG_LENGTH 256
+
+// I2C DEFINES
 #define I2C_ACCEL_ADDR 0x53
 #define I2C_ACCEL_POWER_CTL 0x2d
 #define I2C_ACCEL_DATA_FORMAT 0x31
@@ -29,6 +30,14 @@
 #define I2C_POTI_ADDR 0x48
 #define I2C_POTI_CTRL 0x00
 
+
+// TCP/IP DEFINES
+// SC = server -> client
+// CS = client -> server
+#define TCP_PORT 6665
+#define TCP_CMD_SENSOR_DATA_SC 0x00
+#define TCP_CMD_SENSOR_INTERVAL_SC 0x02
+#define TCP_CMD_SENSOR_INTERVAL_CS 0x03
 
 
 struct tcp_data {

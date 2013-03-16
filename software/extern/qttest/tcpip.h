@@ -34,6 +34,9 @@ public:
     void connect(const QString& ip, int port, PlotManager *plotManager);
     void disconnect();
 
+    int getMeasuringIntervalMs();
+    void setMeasuringIntervalMs(u_int16_t val);
+
 signals:
     
 public slots:

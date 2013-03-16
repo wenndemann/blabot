@@ -31,6 +31,9 @@ private slots:
     void takeScreenshot();
     void tcpIpConnect();
     void tcpIpDisconnect();
+    void tcpIpGetMeasuringInterval();
+    void tcpIpSetMeasuringInterval();
+
 private:
     Ui::MainWindow *ui;
     PlotManager *plotManager;

@@ -76,7 +76,7 @@ void* tcp_parse(void* arg)
         n = read(tcpData.sockfd,(void*) &sensorData, sizeof(sensorData));
         if (n < 0)
         {
-            if(errno == 9) break;
+            if(errno == EBADF) break;
             else {
                 printf("errorno %d\n", errno);
                 perror("ERROR reading from socket");
@@ -95,4 +95,14 @@ void* tcp_parse(void* arg)
         tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
     } while(n >= 0);
     return NULL;
+}
+
+void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
+    int n = 0;
+    u_int8_t buf[4];
+    buf[0] = 0;
+    memcpy(&buf[1], &val, sizeof(val));
+    buf[4] = '\0';
+    n = write(m_fd, &buf, 4);
+    if (n < 0) perror("ERROR writing to socket: ");
 }

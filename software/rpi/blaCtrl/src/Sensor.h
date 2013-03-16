@@ -30,6 +30,7 @@ public:
 
 	void setMeasuringInterval(int intervalMs);
 	sensorData_s* getSensorData() {return &m_sensorData;}
+	int getMeasuringInterval() { return m_intervalMs; }
 
 private:
 	I2c *m_i2cConnection;

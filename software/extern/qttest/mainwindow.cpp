@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pTcpIp = new TCPIP(this);
     connect(ui->pushButtonConnect, SIGNAL(clicked()), this, SLOT(tcpIpConnect()));
     connect(ui->pushButtonDisconnect, SIGNAL(clicked()), this, SLOT(tcpIpDisconnect()));
+    connect(ui->toolButtonGetMeasuingInterval, SIGNAL(clicked()), this, SLOT(tcpIpGetMeasuringInterval()));
+    connect(ui->toolButtonSetMeasuingInterval, SIGNAL(clicked()), this, SLOT(tcpIpSetMeasuringInterval()));
 
     // other connections
     connect(ui->pushButtonScreenshot, SIGNAL(clicked()), this, SLOT(takeScreenshot()));
@@ -54,4 +56,12 @@ void MainWindow::tcpIpConnect() {
 
 void MainWindow::tcpIpDisconnect() {
     pTcpIp->disconnect();
+}
+
+void MainWindow::tcpIpGetMeasuringInterval() {
+
+}
+
+void MainWindow::tcpIpSetMeasuringInterval() {
+    pTcpIp->setMeasuringIntervalMs(ui->spinBoxMeasuingInterval->value());
 }
