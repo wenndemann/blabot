@@ -34,7 +34,7 @@
 // TCP/IP DEFINES
 // SC = server -> client
 // CS = client -> server
-#define TCP_PORT 6665
+#define TCP_PORT_GUI 6665
 #define TCP_CMD_SENSOR_DATA_SC 0x00
 #define TCP_CMD_SENSOR_INTERVAL_SC 0x02
 #define TCP_CMD_SENSOR_INTERVAL_CS 0x03
@@ -46,7 +46,7 @@ struct tcp_data {
 
 	tcp_data() {}
 
-	tcp_data(int newsock) 
+	tcp_data(int newsock)
 	{
 		newsockfd = newsock;
 	}

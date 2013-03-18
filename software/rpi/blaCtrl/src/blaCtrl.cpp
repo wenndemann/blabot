@@ -58,7 +58,7 @@ void* tcpIpListen(void* arg) {
 	if (sockfd < 0)
 	perror("ERROR opening socket");
 	bzero((char *) &serv_addr, sizeof(serv_addr));
-	portno = TCP_PORT;
+	portno = TCP_PORT_GUI;
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
