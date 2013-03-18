@@ -64,4 +64,5 @@ void MainWindow::tcpIpGetMeasuringInterval() {
 
 void MainWindow::tcpIpSetMeasuringInterval() {
     pTcpIp->setMeasuringIntervalMs(ui->spinBoxMeasuingInterval->value());
+
 }

@@ -15,7 +15,7 @@
 
 
 #include "i2c.h"
-#include "../../../include/defs.h"
+#include "defs.h"
 
 
 

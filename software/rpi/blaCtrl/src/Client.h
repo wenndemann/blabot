@@ -9,9 +9,11 @@
 #define CLIENT_H_
 
 #include <pthread.h>
+#include <boost/asio.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "Sensor.h"
-
+#include "defs.h"
 
 class Client {
 public:
@@ -31,8 +33,12 @@ private:
 	int m_fd;
 	pthread_mutex_t *m_sensorMutex;
 	pthread_mutex_t *m_clientMutex;
+	pthread_t m_pthreadSendSensorData;
+	pthread_t m_pthreadParseTcpIp;
 	std::map<int, Client> *m_clientMap;
 
+	void* m_sendSensorData(void* arg);
+	void* m_parseTcpIp(void* arg);
 
 };
 

@@ -11,6 +11,14 @@
 #define BB_PLOT_READ_FPS 100
 #define BB_PLOT_REPLOT_FPS 30
 
+// TCP/IP DEFINES
+// SC = server -> client
+// CS = client -> server
+#define TCP_PORT_GUI 6665
+#define TCP_CMD_SENSOR_DATA_SC 0x00
+#define TCP_CMD_SENSOR_INTERVAL_SC 0x02
+#define TCP_CMD_SENSOR_INTERVAL_CS 0x03
+
 class PlotManager;
 
 struct tcpData_s {

@@ -17,9 +17,9 @@
 //#include <time.h>
 
 #include "Client.h"
-#include "../../../include/defs.h"
 #include "tools.h"
 #include "Sensor.h"
+#include "defs.h"
 // SERVER
 
 #define SEMM_NUM_THREADS 8
@@ -34,6 +34,9 @@ void* tcpIpListen(void* arg);
 
 int main(int argc, char** argv)
 {
+	unsigned int nClientsInMap;
+	std::map<int,Client>::iterator it;
+
 	if(pthread_mutex_init(&g_sensorMutex, NULL))
 		perror("Faild to initialize sensor mutex");
 	if(pthread_mutex_init(&g_clientMutex, NULL))
@@ -42,7 +45,20 @@ int main(int argc, char** argv)
 	printf("timer init\n");
 	g_sensor.setMeasuringInterval(10);
 
-
+	if (pthread_create(&g_pthreadTcpIpListen, 0, tcpIpListen, NULL) < 0) {
+		pthread_detach(g_pthreadTcpIpListen);
+		perror("ERROR create tcp listen thread: ");
+	}
+	while(true) {
+		if(nClientsInMap != g_clientMap.size()) {
+			printf("\nclient list: \n");
+			for(it=g_clientMap.begin(); it != g_clientMap.end(); ++it)
+				printf("-> client %d in map\n", it->first);
+			printf("end of client list\n\n");
+			nClientsInMap = g_clientMap.size();
+		}
+		usleep(100000);
+	}
 	return 0;
 }
 
@@ -67,15 +83,14 @@ void* tcpIpListen(void* arg) {
 	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
 		perror("ERROR on binding");
 
-	std::map<int,Client>::iterator it;
-
 	while(true) {
+		printf("listening to port %d\n", TCP_PORT_GUI);
 		listen(sockfd,5);
 		clilen = sizeof(cli_addr);
 		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
-
 		if (newsockfd < 0)
 		  perror("ERROR on accept");
+		printf("%d connected\n", sockfd);
 
 		cli = new Client();
 		cli->setSensor(&g_sensor);
@@ -85,12 +100,6 @@ void* tcpIpListen(void* arg) {
 		cli->setClientMap(&g_clientMap);
 		g_clientMap.insert(std::pair<int, Client>(newsockfd, *cli));
 		cli->run();
-
-		printf("\nclient list: \n");
-		for(it=g_clientMap.begin(); it != g_clientMap.end(); ++it)
-			printf("-> client %d in map\n", it->first);
-		printf("end of client list\n\n");
-
 	}
 	return NULL;
 }

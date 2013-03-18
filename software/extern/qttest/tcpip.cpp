@@ -5,6 +5,9 @@
 #define BB_NUM_THREADS 8
 #define BB_NUMPOINTS 100
 
+typedef  void* (TCPIP::*Thread2Ptr)(void*);
+typedef  void* (*PthreadPtr)(void*);
+
 pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t pthreadTcpIp;
 sensorData_s sensorData;
@@ -52,7 +55,9 @@ void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
         }
         m_fd = sockfd;
         m_isConnected = true;
-        if (pthread_create(&pthreadTcpIp, NULL, tcp_parse, &tcpData))
+        Thread2Ptr t = &TCPIP::tcp_parse;
+        PthreadPtr p = *(PthreadPtr*)&t;
+        if (pthread_create(&pthreadTcpIp, NULL, p, &tcpData))
         {
             perror("Failed to create thread for TCP/IP parsing");
 
@@ -66,14 +71,16 @@ void TCPIP::disconnect() {
     m_isConnected = false;
 }
 
-void* tcp_parse(void* arg)
+void* TCPIP::tcp_parse(void* arg)
 {
     // TCP IP CONNECTION
     int n;
+    int16_t tempInt;
+    uint8_t buf[BB_TCPIP_MSG_LENGTH];
     tcpData_s tcpData = *((tcpData_s*) arg);
     do
     {
-        n = read(tcpData.sockfd,(void*) &sensorData, sizeof(sensorData));
+        n = read(tcpData.sockfd,(void*) &buf, BB_TCPIP_MSG_LENGTH);
         if (n < 0)
         {
             if(errno == EBADF) break;
@@ -83,16 +90,26 @@ void* tcp_parse(void* arg)
                 return NULL;
             }
         }
-        tcpData.plotManager->addNewValue(0,sensorData.accel[0]);
-        tcpData.plotManager->addNewValue(1,sensorData.accel[1]);
-        tcpData.plotManager->addNewValue(2,sensorData.accel[2]);
-        tcpData.plotManager->addNewValue(3,sensorData.gyro[0]);
-        tcpData.plotManager->addNewValue(4,sensorData.gyro[1]);
-        tcpData.plotManager->addNewValue(5,sensorData.gyro[2]);
-        tcpData.plotManager->addNewValue(6,sensorData.mag[0]);
-        tcpData.plotManager->addNewValue(7,sensorData.mag[1]);
-        tcpData.plotManager->addNewValue(8,sensorData.mag[2]);
-        tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
+        switch(buf[0]) {
+        case TCP_CMD_SENSOR_DATA_SC:
+            memcpy(&sensorData, &buf[1], sizeof(sensorData));
+            tcpData.plotManager->addNewValue(0,sensorData.accel[0]);
+            tcpData.plotManager->addNewValue(1,sensorData.accel[1]);
+            tcpData.plotManager->addNewValue(2,sensorData.accel[2]);
+            tcpData.plotManager->addNewValue(3,sensorData.gyro[0]);
+            tcpData.plotManager->addNewValue(4,sensorData.gyro[1]);
+            tcpData.plotManager->addNewValue(5,sensorData.gyro[2]);
+            tcpData.plotManager->addNewValue(6,sensorData.mag[0]);
+            tcpData.plotManager->addNewValue(7,sensorData.mag[1]);
+            tcpData.plotManager->addNewValue(8,sensorData.mag[2]);
+            tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
+            break;
+        case TCP_CMD_SENSOR_INTERVAL_SC:
+            memcpy(&tempInt, &buf[1], sizeof(tempInt));
+        default:
+            break;
+        }
+
     } while(n >= 0);
     return NULL;
 }
@@ -100,7 +117,7 @@ void* tcp_parse(void* arg)
 void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
     int n = 0;
     u_int8_t buf[4];
-    buf[0] = 0;
+    buf[0] = TCP_CMD_SENSOR_INTERVAL_CS;
     memcpy(&buf[1], &val, sizeof(val));
     buf[4] = '\0';
     n = write(m_fd, &buf, 4);

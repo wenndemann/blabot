@@ -20,12 +20,6 @@
 
 #include "plotmanager.h"
 
-struct bla {
-    int a;
-    PlotManager b;
-};
-
-
 class TCPIP : public QObject
 {
     Q_OBJECT
@@ -44,7 +38,7 @@ public slots:
 private:
     int m_fd;
     bool m_isConnected;
-    
+    void* tcp_parse(void* arg);
 };
 
 #endif // TCPIP_H
