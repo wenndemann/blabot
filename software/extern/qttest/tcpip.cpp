@@ -2,6 +2,8 @@
 
 #include "defs.h"
 
+#include "mainwindow.h"
+
 #define BB_NUM_THREADS 8
 #define BB_NUMPOINTS 100
 
@@ -19,13 +21,13 @@ TCPIP::TCPIP(QObject *parent) :
 {
 }
 
-void TCPIP::connect(const QString& ip, int port, PlotManager *plotManager)
+void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
 {
     if(!m_isConnected) {
         int sockfd = socket(AF_INET, SOCK_STREAM, 0);
         struct sockaddr_in serv_addr;
         struct hostent *server;
-        tcpData_s tcpData(sockfd, plotManager);
+        tcpData_s tcpData(sockfd, mainWindow);
         if (sockfd < 0)
         {
             perror("ERROR opening socket");
@@ -91,27 +93,42 @@ void* TCPIP::tcp_parse(void* arg)
             }
         }
         switch(buf[0]) {
-        case TCP_CMD_SENSOR_DATA_SC:
-            memcpy(&sensorData, &buf[1], sizeof(sensorData));
-            tcpData.plotManager->addNewValue(0,sensorData.accel[0]);
-            tcpData.plotManager->addNewValue(1,sensorData.accel[1]);
-            tcpData.plotManager->addNewValue(2,sensorData.accel[2]);
-            tcpData.plotManager->addNewValue(3,sensorData.gyro[0]);
-            tcpData.plotManager->addNewValue(4,sensorData.gyro[1]);
-            tcpData.plotManager->addNewValue(5,sensorData.gyro[2]);
-            tcpData.plotManager->addNewValue(6,sensorData.mag[0]);
-            tcpData.plotManager->addNewValue(7,sensorData.mag[1]);
-            tcpData.plotManager->addNewValue(8,sensorData.mag[2]);
-            tcpData.plotManager->addNewValue(9,sensorData.poti); //TODO
-            break;
-        case TCP_CMD_SENSOR_INTERVAL_SC:
-            memcpy(&tempInt, &buf[1], sizeof(tempInt));
-        default:
-            break;
+            case TCP_CMD_SENSOR_DATA_SC: {
+                memcpy(&sensorData, &buf[1], sizeof(sensorData));
+                PlotManager *pM = tcpData.mainWindow->getPlotManagerPtr();
+                pM->addNewValue(0,sensorData.accel[0]);
+                pM->addNewValue(1,sensorData.accel[1]);
+                pM->addNewValue(2,sensorData.accel[2]);
+                pM->addNewValue(3,sensorData.gyro[0]);
+                pM->addNewValue(4,sensorData.gyro[1]);
+                pM->addNewValue(5,sensorData.gyro[2]);
+                pM->addNewValue(6,sensorData.mag[0]);
+                pM->addNewValue(7,sensorData.mag[1]);
+                pM->addNewValue(8,sensorData.mag[2]);
+                pM->addNewValue(9,sensorData.poti); //TODO
+                break;
+            }
+            case TCP_CMD_SENSOR_INTERVAL_SC: {
+                memcpy(&tempInt, &buf[1], sizeof(tempInt));
+                QMetaObject::invokeMethod(tcpData.mainWindow, SLOT(tcpIpGetMeasuringInterval(u_int16_t)), Qt::QueuedConnection, Q_ARG(u_int16_t, tempInt));
+                break;
+            }
+            default: {
+                break;
+            }
         }
 
     } while(n >= 0);
     return NULL;
+}
+
+void TCPIP::getMeasuringIntervalMs() {
+    int n = 0;
+    u_int8_t buf[4];
+    buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
+    buf[4] = '\0';
+    n = write(m_fd, &buf, 4);
+    if (n < 0) perror("ERROR writing to socket: ");
 }
 
 void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
@@ -123,3 +140,4 @@ void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
     n = write(m_fd, &buf, 4);
     if (n < 0) perror("ERROR writing to socket: ");
 }
+

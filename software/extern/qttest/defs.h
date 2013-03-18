@@ -19,19 +19,21 @@
 #define TCP_CMD_SENSOR_INTERVAL_SC 0x02
 #define TCP_CMD_SENSOR_INTERVAL_CS 0x03
 
+class MainWindow;
 class PlotManager;
 
 struct tcpData_s {
     int sockfd;
-    PlotManager *plotManager;
+
+    MainWindow *mainWindow;
     std::string name;
 
     tcpData_s() {}
 
-    tcpData_s(int newsock, PlotManager *pm)
+    tcpData_s(int newsock, MainWindow *mw)
     {
         sockfd = newsock;
-        plotManager = pm;
+        mainWindow = mw;
     }
 };
 

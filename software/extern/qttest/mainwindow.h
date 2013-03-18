@@ -26,12 +26,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    PlotManager* getPlotManagerPtr();
     
 private slots:
     void takeScreenshot();
     void tcpIpConnect();
     void tcpIpDisconnect();
     void tcpIpGetMeasuringInterval();
+    void tcpIpGetMeasuringInterval(u_int16_t val);
     void tcpIpSetMeasuringInterval();
 
 private:

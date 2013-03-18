@@ -38,6 +38,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+PlotManager* MainWindow::getPlotManagerPtr() {
+    return plotManager;
+}
+
 void MainWindow::takeScreenshot()
 {
     QPixmap pixmap(this->width(), this->height());
@@ -51,7 +55,7 @@ void MainWindow::takeScreenshot()
 }
 
 void MainWindow::tcpIpConnect() {
-    pTcpIp->connect(ui->lineEditIP->text(), ui->spinBoxPort->value(), plotManager);
+    pTcpIp->connect(ui->lineEditIP->text(), ui->spinBoxPort->value(), this);
 }
 
 void MainWindow::tcpIpDisconnect() {
@@ -59,10 +63,13 @@ void MainWindow::tcpIpDisconnect() {
 }
 
 void MainWindow::tcpIpGetMeasuringInterval() {
+    pTcpIp->getMeasuringIntervalMs(); // send the command to get the measuring interva
+}
 
+void MainWindow::tcpIpGetMeasuringInterval(u_int16_t val) {
+    ui->spinBoxMeasuingInterval->setValue(val); // receive the new measuring data
 }
 
 void MainWindow::tcpIpSetMeasuringInterval() {
     pTcpIp->setMeasuringIntervalMs(ui->spinBoxMeasuingInterval->value());
-
 }

@@ -18,17 +18,17 @@
 #include <pthread.h>
 #include <cerrno>
 
-#include "plotmanager.h"
+class MainWindow;
 
 class TCPIP : public QObject
 {
     Q_OBJECT
 public:
     explicit TCPIP(QObject *parent = 0);
-    void connect(const QString& ip, int port, PlotManager *plotManager);
+    void connect(const QString& ip, int port, MainWindow *mainWindow);
     void disconnect();
 
-    int getMeasuringIntervalMs();
+    void getMeasuringIntervalMs();
     void setMeasuringIntervalMs(u_int16_t val);
 
 signals:
