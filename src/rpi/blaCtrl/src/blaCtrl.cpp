@@ -80,6 +80,7 @@ void* tcpIpListen(void* arg) {
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(portno);
 
+
 	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
 		perror("ERROR on binding");
 
@@ -90,7 +91,7 @@ void* tcpIpListen(void* arg) {
 		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
 		if (newsockfd < 0)
 		  perror("ERROR on accept");
-		printf("%d connected\n", sockfd);
+		printf("%d connected\n", newsockfd);
 
 		cli = new Client();
 		cli->setSensor(&g_sensor);
