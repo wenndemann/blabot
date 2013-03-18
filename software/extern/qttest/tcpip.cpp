@@ -57,9 +57,9 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
         }
         m_fd = sockfd;
         m_isConnected = true;
-        Thread2Ptr t = &TCPIP::tcp_parse;
-        PthreadPtr p = *(PthreadPtr*)&t;
-        if (pthread_create(&pthreadTcpIp, NULL, p, &tcpData))
+        //Thread2Ptr t = &TCPIP::tcp_parse;
+        //PthreadPtr p = *(PthreadPtr*)&t;
+        if (pthread_create(&pthreadTcpIp, NULL, &tcp_parse, &tcpData))
         {
             perror("Failed to create thread for TCP/IP parsing");
 
@@ -73,7 +73,7 @@ void TCPIP::disconnect() {
     m_isConnected = false;
 }
 
-void* TCPIP::tcp_parse(void* arg)
+void* tcp_parse(void* arg)
 {
     // TCP IP CONNECTION
     int n;
@@ -126,7 +126,7 @@ void TCPIP::getMeasuringIntervalMs() {
     int n = 0;
     u_int8_t buf[4];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
-    buf[4] = '\0';
+    buf[3] = '\0';
     n = write(m_fd, &buf, 4);
     if (n < 0) perror("ERROR writing to socket: ");
 }
@@ -136,7 +136,7 @@ void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
     u_int8_t buf[4];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_CS;
     memcpy(&buf[1], &val, sizeof(val));
-    buf[4] = '\0';
+    buf[3] = '\0';
     n = write(m_fd, &buf, 4);
     if (n < 0) perror("ERROR writing to socket: ");
 }

@@ -73,27 +73,29 @@ void* Client::m_parseTcpIp(void* arg) {
 	int16_t tempInt;
 	printf("start reading data from %d\n", m_fd);
 	do {
-		n = read(m_fd, &buf, TCP_MSG_LENGTH);
-		if (n < 0) {
-			printf("errorno: %d\n",errno);
-			perror("ERROR reading to TCP IP");
-		}
-		switch(buf[0]) {
-		case TCP_CMD_SENSOR_INTERVAL_SC:
-			tempInt = m_sensor->getMeasuringInterval();
-			buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
-			memcpy(&buf[1], &tempInt, sizeof(tempInt));
-			buf[4] = '\0';
-			write(m_fd, &buf, 4);
-			break;
-		case TCP_CMD_SENSOR_INTERVAL_CS:
-			memcpy(&tempInt, &buf[1], sizeof(tempInt));
-			m_sensor->setMeasuringInterval(tempInt);
-			printf("%d change sensor interval to %dms\n",
-				m_fd, m_sensor->getMeasuringInterval());
-			break;
-		}
-	} while(n);
+			n = read(m_fd, &buf, TCP_MSG_LENGTH);
+			if (n < 0) {
+				printf("errorno: %d\n",errno);
+				perror("ERROR reading to TCP IP");
+			}
+			switch(buf[0]) {
+			case TCP_CMD_SENSOR_INTERVAL_SC:
+				tempInt = m_sensor->getMeasuringInterval();
+				buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
+				memcpy(&buf[1], &tempInt, sizeof(tempInt));
+				buf[3] = '\0';
+				write(m_fd, &buf, 4);
+				printf("send timer interval (%dms) to %d\n",
+					m_sensor->getMeasuringInterval(), m_fd);
+				break;
+			case TCP_CMD_SENSOR_INTERVAL_CS:
+				memcpy(&tempInt, &buf[1], sizeof(tempInt));
+				m_sensor->setMeasuringInterval(tempInt);
+				printf("%d change sensor interval to %dms\n",
+					m_fd, m_sensor->getMeasuringInterval());
+				break;
+			}
+		} while(n);
 	printf("stop reading data from %d\n", m_fd);
 	m_clientMap->erase(m_fd);
 	close(m_fd);
