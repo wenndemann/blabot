@@ -94,14 +94,14 @@ void* TCPIP::tcp_parse(void* arg)
                 memcpy(&sensorData, &buf[1], sizeof(sensorData));
                 PlotManager *pM = tcpData.mainWindow->getPlotManagerPtr();
                 pM->addNewValue(0,sensorData.accel[0]);
-                pM->addNewValue(1,sensorData.accel[1]);
-                pM->addNewValue(2,sensorData.accel[2]);
+                pM->addNewValue(1,-sensorData.accel[2]);
+                pM->addNewValue(2,-sensorData.accel[1]);
                 pM->addNewValue(3,sensorData.gyro[0]);
-                pM->addNewValue(4,sensorData.gyro[1]);
-                pM->addNewValue(5,sensorData.gyro[2]);
+                pM->addNewValue(4,-sensorData.gyro[2]);
+                pM->addNewValue(5,-sensorData.gyro[1]);
                 pM->addNewValue(6,sensorData.mag[0]);
-                pM->addNewValue(7,sensorData.mag[1]);
-                pM->addNewValue(8,sensorData.mag[2]);
+                pM->addNewValue(7,sensorData.mag[2]);
+                pM->addNewValue(8,sensorData.mag[1]);
                 pM->addNewValue(9,sensorData.poti); //TODO
                 break;
             }
