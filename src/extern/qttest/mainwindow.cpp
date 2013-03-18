@@ -66,7 +66,7 @@ void MainWindow::tcpIpGetMeasuringInterval() {
     pTcpIp->getMeasuringIntervalMs(); // send the command to get the measuring interva
 }
 
-void MainWindow::tcpIpGetMeasuringInterval(u_int16_t val) {
+void MainWindow::tcpIpGetMeasuringInterval(quint16 val) {
     ui->spinBoxMeasuingInterval->setValue(val); // receive the new measuring data
 }
 

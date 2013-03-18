@@ -7,9 +7,6 @@
 #define BB_NUM_THREADS 8
 #define BB_NUMPOINTS 100
 
-typedef  void* (TCPIP::*Thread2Ptr)(void*);
-typedef  void* (*PthreadPtr)(void*);
-
 pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t pthreadTcpIp;
 sensorData_s sensorData;
@@ -55,10 +52,10 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
             msgBox.exec();
             return;
         }
+
         m_fd = sockfd;
         m_isConnected = true;
-        //Thread2Ptr t = &TCPIP::tcp_parse;
-        //PthreadPtr p = *(PthreadPtr*)&t;
+
         if (pthread_create(&pthreadTcpIp, NULL, &tcp_parse, &tcpData))
         {
             perror("Failed to create thread for TCP/IP parsing");
@@ -73,10 +70,10 @@ void TCPIP::disconnect() {
     m_isConnected = false;
 }
 
-void* tcp_parse(void* arg)
+void* TCPIP::tcp_parse(void* arg)
 {
     // TCP IP CONNECTION
-    int n;
+    int n = -1;
     int16_t tempInt;
     uint8_t buf[BB_TCPIP_MSG_LENGTH];
     tcpData_s tcpData = *((tcpData_s*) arg);
@@ -110,7 +107,7 @@ void* tcp_parse(void* arg)
             }
             case TCP_CMD_SENSOR_INTERVAL_SC: {
                 memcpy(&tempInt, &buf[1], sizeof(tempInt));
-                QMetaObject::invokeMethod(tcpData.mainWindow, "tcpIpGetMeasuringInterval", Qt::QueuedConnection, Q_ARG(u_int16_t, tempInt));
+                QMetaObject::invokeMethod(tcpData.mainWindow, "tcpIpGetMeasuringInterval", Qt::QueuedConnection, Q_ARG(quint16, tempInt));
                 break;
             }
             default: {
@@ -123,21 +120,17 @@ void* tcp_parse(void* arg)
 }
 
 void TCPIP::getMeasuringIntervalMs() {
-    int n = 0;
-    u_int8_t buf[4];
+    u_int8_t buf[2];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
-    buf[3] = '\0';
-    n = write(m_fd, &buf, 4);
-    if (n < 0) perror("ERROR writing to socket: ");
+    buf[1] = '\0';
+    if (write(m_fd, &buf, 2) < 0) perror("ERROR writing to socket: ");
 }
 
 void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
-    int n = 0;
     u_int8_t buf[4];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_CS;
     memcpy(&buf[1], &val, sizeof(val));
     buf[3] = '\0';
-    n = write(m_fd, &buf, 4);
-    if (n < 0) perror("ERROR writing to socket: ");
+    if (write(m_fd, &buf, 4) < 0) perror("ERROR writing to socket: ");
 }
 

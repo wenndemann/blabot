@@ -34,7 +34,7 @@ private slots:
     void tcpIpConnect();
     void tcpIpDisconnect();
     void tcpIpGetMeasuringInterval();
-    void tcpIpGetMeasuringInterval(u_int16_t val);
+    void tcpIpGetMeasuringInterval(quint16 val);
     void tcpIpSetMeasuringInterval();
 
 private:
