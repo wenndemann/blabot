@@ -57,9 +57,9 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
         }
         m_fd = sockfd;
         m_isConnected = true;
-        Thread2Ptr t = &TCPIP::tcp_parse;
-        PthreadPtr p = *(PthreadPtr*)&t;
-        if (pthread_create(&pthreadTcpIp, NULL, p, &tcpData))
+        //Thread2Ptr t = &TCPIP::tcp_parse;
+        //PthreadPtr p = *(PthreadPtr*)&t;
+        if (pthread_create(&pthreadTcpIp, NULL, &tcp_parse, &tcpData))
         {
             perror("Failed to create thread for TCP/IP parsing");
 
@@ -73,7 +73,7 @@ void TCPIP::disconnect() {
     m_isConnected = false;
 }
 
-void* TCPIP::tcp_parse(void* arg)
+void* tcp_parse(void* arg)
 {
     // TCP IP CONNECTION
     int n;

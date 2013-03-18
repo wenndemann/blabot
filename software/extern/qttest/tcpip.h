@@ -38,7 +38,7 @@ public slots:
 private:
     int m_fd;
     bool m_isConnected;
-    void* tcp_parse(void* arg);
+    //void* tcp_parse(void* arg);
 };
 
 #endif // TCPIP_H
