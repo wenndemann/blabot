@@ -34,3 +34,7 @@ ui_*.h
 
 #except this file
 !.gitignore
+
+/software/rpi/*/Debug
+/software/rpi/*/Release
+
