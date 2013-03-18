@@ -110,7 +110,7 @@ void* tcp_parse(void* arg)
             }
             case TCP_CMD_SENSOR_INTERVAL_SC: {
                 memcpy(&tempInt, &buf[1], sizeof(tempInt));
-                QMetaObject::invokeMethod(tcpData.mainWindow, SLOT(tcpIpGetMeasuringInterval(u_int16_t)), Qt::QueuedConnection, Q_ARG(u_int16_t, tempInt));
+                QMetaObject::invokeMethod(tcpData.mainWindow, "tcpIpGetMeasuringInterval", Qt::QueuedConnection, Q_ARG(u_int16_t, tempInt));
                 break;
             }
             default: {
