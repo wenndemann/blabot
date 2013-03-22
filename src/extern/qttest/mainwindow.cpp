@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->toolButtonGetMeasuingInterval, SIGNAL(clicked()), this, SLOT(tcpIpGetMeasuringInterval()));
     connect(ui->toolButtonSetMeasuingInterval, SIGNAL(clicked()), this, SLOT(tcpIpSetMeasuringInterval()));
 
+    // Visualization
+    connect(pTcpIp, SIGNAL(measuredRotation(float)), this->ui->widgetVisualization, SLOT(setRotation(float)));
+
     // other connections
     connect(ui->pushButtonScreenshot, SIGNAL(clicked()), this, SLOT(takeScreenshot()));
 }
@@ -40,6 +43,10 @@ MainWindow::~MainWindow()
 
 PlotManager* MainWindow::getPlotManagerPtr() {
     return plotManager;
+}
+
+VisWidget* MainWindow::getWidgetVisualizationPtr() {
+    return this->ui->widgetVisualization;
 }
 
 void MainWindow::takeScreenshot()

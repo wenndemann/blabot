@@ -24,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tabControl">
        <attribute name="title">
@@ -625,6 +625,16 @@ right</string>
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tabVis">
+       <attribute name="title">
+        <string>visualization</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="VisWidget" name="widgetVisualization" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -674,6 +684,12 @@ right</string>
    <class>widgetCurveControl</class>
    <extends>QWidget</extends>
    <header>widgetcurvecontrol.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VisWidget</class>
+   <extends>QWidget</extends>
+   <header>viswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

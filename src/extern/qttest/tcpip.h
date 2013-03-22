@@ -31,8 +31,6 @@ public:
     void getMeasuringIntervalMs();
     void setMeasuringIntervalMs(u_int16_t val);
 
-signals:
-    
 public slots:
 
 private:

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,13 +22,15 @@ SOURCES += main.cpp\
     graphplotter.cpp \
     tcpip.cpp \
     widgetcurvecontrol.cpp \
-    plotmanager.cpp
+    plotmanager.cpp \
+    viswidget.cpp
 
 HEADERS  += mainwindow.h \
     graphplotter.h \
     tcpip.h \
     defs.h \
     widgetcurvecontrol.h \
-    plotmanager.h
+    plotmanager.h \
+    viswidget.h
 
 FORMS    += mainwindow.ui

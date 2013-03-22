@@ -15,8 +15,10 @@
 
 #include "tcpip.h"
 #include "plotmanager.h"
+#include "viswidget.h"
+
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -28,6 +30,7 @@ public:
     ~MainWindow();
 
     PlotManager* getPlotManagerPtr();
+    VisWidget* getWidgetVisualizationPtr();
     
 private slots:
     void takeScreenshot();

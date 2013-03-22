@@ -103,6 +103,10 @@ void* TCPIP::tcp_parse(void* arg)
                 pM->addNewValue(7,sensorData.mag[2]);
                 pM->addNewValue(8,sensorData.mag[1]);
                 pM->addNewValue(9,sensorData.poti); //TODO
+
+                VisWidget *vW = tcpData.mainWindow->getWidgetVisualizationPtr();
+                vW->setRotation(sensorData.accel[0], -sensorData.accel[2], -sensorData.accel[1]);
+
                 break;
             }
             case TCP_CMD_SENSOR_INTERVAL_SC: {
@@ -133,4 +137,3 @@ void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
     buf[3] = '\0';
     if (write(m_fd, &buf, 4) < 0) perror("ERROR writing to socket: ");
 }
-
