@@ -28,6 +28,8 @@ private:
     QScrollBar *m_scrollBarPlotArea;
     long m_plotDataLength;
 
+    Ui::MainWindow *m_pUi;
+
     // psuedo data
     bool m_bDrawPseudo;
 

@@ -64,6 +64,8 @@ PlotManager::PlotManager(Ui::MainWindow *ui, QObject *parent) :
     // pseudo data
     m_bDrawPseudo = ui->groupBoxPseudo->isChecked();
     connect(ui->checkBoxPseudo, SIGNAL(toggled(bool)), this, SLOT(setDrawPseudo(bool)));
+
+    m_pUi = ui;
 }
 
 void PlotManager::addNewValue(int curve, double val) {
@@ -72,16 +74,40 @@ void PlotManager::addNewValue(int curve, double val) {
 
 void PlotManager::shift() {
 
-    if (m_bDrawPseudo)
-    {
-        static float offset=0;
-        offset+=0.003;
+    if (m_bDrawPseudo) {
+        static float offset=0.0f;
+        offset+=0.003f;
 
-        for(unsigned int i = 0; i < m_vecCurves.size(); i++)
-        {
+        float accX, accY, accZ;
+        accX = accY = accZ = 0.0f;
+
+        for(unsigned int i = 0; i < m_vecCurves.size(); i++) {
+
+            float val = 0.0f;
+
+            if (i < 3) {
+                val = sin(offset + (i*M_PI)/3)*500;
+            }
+            else {
+                val = sin(offset+(i*M_2PI)/m_vecCurves.size())*500;
+            }
+
             if (m_vecCurves[i])
-                m_vecCurves[i]->addNewVal(sin(offset+(i*M_2PI)/m_vecCurves.size())*500);
+                m_vecCurves[i]->addNewVal(val);
+
+            switch(i) {
+                case 0: accX = val; break;
+                case 1: accY = val; break;
+                case 2: accZ = val; break;
+                default: break;
+            }
+
+            if (i == 2) {
+                m_pUi->widgetVisualization->setRotation(accX, accY, accZ);
+            }
+
         }
+
     }
 
 
