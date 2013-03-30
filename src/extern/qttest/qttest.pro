@@ -4,18 +4,27 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = qttest
 TEMPLATE = app
 
-INCLUDEPATH += /usr/include/qwt
+win32{
+    INCLUDEPATH += C:/Qt/qwt/src
+    LIBS += -LC:/Qt/qwt/lib -lqwt
+    DEPENDPATH += C:/Qt/qwt/src
 
-LIBS += -L/usr/lib -lqwt
-
-DEPENDPATH += /usr/include/qwt
+    INCLUDEPATH += C:/boost
+    LIBS += -LC:/boost/lib -llibboost_system -llibboost_thread
+    DEPENDPATH += C:/boost
+}
+!win32{
+    INCLUDEPATH += /usr/include/qwt
+    LIBS += -L/usr/lib -lqwt -lboost_system -lboost_thread
+    DEPENDPATH += /usr/include/qwt
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -33,4 +42,4 @@ HEADERS  += mainwindow.h \
     plotmanager.h \
     viswidget.h
 
-FORMS    += mainwindow.ui
+FORMS += mainwindow.ui

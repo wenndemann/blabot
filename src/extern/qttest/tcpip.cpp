@@ -1,14 +1,15 @@
 #include "tcpip.h"
-
-#include "defs.h"
-
 #include "mainwindow.h"
 
 #define BB_NUM_THREADS 8
 #define BB_NUMPOINTS 100
 
-pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_t pthreadTcpIp;
+//pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
+//pthread_t pthreadTcpIp;
+
+boost::mutex g_mutex;
+//boost::thread threadTcpIp;
+
 sensorData_s sensorData;
 
 void* tcp_parse(void* arg);
@@ -37,10 +38,13 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
             return;
         }
 
-        bzero((char *) &serv_addr, sizeof(serv_addr));
+        //bzero((char *) &serv_addr, sizeof(serv_addr));
+        memset((char *) &serv_addr, 0, sizeof(serv_addr));
         serv_addr.sin_family = AF_INET;
-        bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr,
-            server->h_length);
+        //bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr,
+        //    server->h_length);
+        memcpy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr,
+               server->h_length);
         serv_addr.sin_port = htons(port);
 
         if (::connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
@@ -56,12 +60,15 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
         m_fd = sockfd;
         m_isConnected = true;
 
-        if (pthread_create(&pthreadTcpIp, NULL, &tcp_parse, &tcpData))
-        {
-            perror("Failed to create thread for TCP/IP parsing");
+        //if (pthread_create(&pthreadTcpIp, NULL, &tcp_parse, &tcpData))
+        //{
+        //    perror("Failed to create thread for TCP/IP parsing");
+        //    return;
+        //}
+        boost::thread threadTcpIp(tcp_parse, tcpData);
 
-            return;
-        }
+        // uncomment to wait until the thread has been closed
+        //threadTcpIp.join();
     }
 }
 
@@ -70,13 +77,13 @@ void TCPIP::disconnect() {
     m_isConnected = false;
 }
 
-void* TCPIP::tcp_parse(void* arg)
+void TCPIP::tcp_parse(const tcpData_s& tcpData)
 {
     // TCP IP CONNECTION
     int n = -1;
     int16_t tempInt;
     uint8_t buf[BB_TCPIP_MSG_LENGTH];
-    tcpData_s tcpData = *((tcpData_s*) arg);
+    //tcpData_s tcpData = *((tcpData_s*) arg);
     do
     {
         n = read(tcpData.sockfd,(void*) &buf, BB_TCPIP_MSG_LENGTH);
@@ -86,7 +93,7 @@ void* TCPIP::tcp_parse(void* arg)
             else {
                 printf("errorno %d\n", errno);
                 perror("ERROR reading from socket");
-                return NULL;
+                return;
             }
         }
         switch(buf[0]) {
@@ -120,18 +127,17 @@ void* TCPIP::tcp_parse(void* arg)
         }
 
     } while(n >= 0);
-    return NULL;
 }
 
 void TCPIP::getMeasuringIntervalMs() {
-    u_int8_t buf[2];
+    uint8_t buf[2];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
     buf[1] = '\0';
     if (write(m_fd, &buf, 2) < 0) perror("ERROR writing to socket: ");
 }
 
-void TCPIP::setMeasuringIntervalMs(u_int16_t val) {
-    u_int8_t buf[4];
+void TCPIP::setMeasuringIntervalMs(uint16_t val) {
+    uint8_t buf[4];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_CS;
     memcpy(&buf[1], &val, sizeof(val));
     buf[3] = '\0';

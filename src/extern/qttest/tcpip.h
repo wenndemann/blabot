@@ -9,14 +9,25 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+
+#ifdef WIN32
+//#include <windows.h>
+#include <io.h>
+#else
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <pthread.h>
 #include <cerrno>
+#endif
+
+#include <boost/thread.hpp>
+#include <boost/cstdint.hpp>
+
+#include "defs.h"
 
 class MainWindow;
 
@@ -29,14 +40,14 @@ public:
     void disconnect();
 
     void getMeasuringIntervalMs();
-    void setMeasuringIntervalMs(u_int16_t val);
+    void setMeasuringIntervalMs(uint16_t val);
 
 public slots:
 
 private:
     int m_fd;
     bool m_isConnected;
-    static void* tcp_parse(void* arg);
+    static void tcp_parse(const tcpData_s& tcpData);
 };
 
 #endif // TCPIP_H

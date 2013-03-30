@@ -2,6 +2,7 @@
 #define DEFS_H
 
 #include <string>
+#include <boost/cstdint.hpp>
 
 #define BB_TCPIP_PORT 6665
 #define BB_TCPIP_MSG_LENGTH 256

@@ -13,7 +13,7 @@
 #include <qwt_legend.h>
 #include <math.h>
 
-#include <widgetcurvecontrol.h>
+#include "widgetcurvecontrol.h"
 
 class GraphPlotter : public QwtPlot
 {
