@@ -1,0 +1,9 @@
+
+pacman -S i2c-tools
+nano /etc/modules-load.d/snd-bcm2835.conf 
+  insert: 
+    snd-bcm2835
+    i2c-dev
+    i2c-bcm2708
+  save and reboot
+
