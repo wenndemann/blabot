@@ -5,6 +5,7 @@
 
 #include <QMessageBox>
 #include <QString>
+#include <QQuaternion>
 
 #include <iostream>
 #include <stdio.h>

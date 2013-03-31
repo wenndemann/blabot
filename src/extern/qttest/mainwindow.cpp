@@ -77,3 +77,18 @@ void MainWindow::tcpIpGetMeasuringInterval(quint16 val) {
 void MainWindow::tcpIpSetMeasuringInterval() {
     pTcpIp->setMeasuringIntervalMs(ui->spinBoxMeasuingInterval->value());
 }
+
+void MainWindow::setQuaternionVals(double angle, double x, double y, double z)
+{
+    ui->labelQAngle->setText(QString("QAngle\t%1").arg(angle));
+    ui->labelQX->setText(    QString("QX\t%1").arg(x));
+    ui->labelQY->setText(    QString("QY\t%1").arg(y));
+    ui->labelQZ->setText(    QString("QZ\t%1").arg(z));
+}
+
+void MainWindow::setQuaternions(QQuaternion *q) {
+    ui->labelQAngle->setText(QString("QAngle\t%1").arg(q->scalar()));
+    ui->labelQX->setText(    QString("QX\t%1").arg(q->x()));
+    ui->labelQY->setText(    QString("QY\t%1").arg(q->y()));
+    ui->labelQZ->setText(    QString("QZ\t%1").arg(q->z()));
+}

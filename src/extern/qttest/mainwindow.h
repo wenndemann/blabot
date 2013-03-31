@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QSignalMapper>
 #include <QColorDialog>
+#include <QQuaternion>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -31,7 +32,10 @@ public:
 
     PlotManager* getPlotManagerPtr();
     VisWidget* getWidgetVisualizationPtr();
-    
+
+    void setQuaternionVals(double angle, double x, double y, double z);
+    void setQuaternions(QQuaternion *q);
+
 private slots:
     void takeScreenshot();
     void tcpIpConnect();
