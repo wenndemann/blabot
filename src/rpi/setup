@@ -1,0 +1,61 @@
+******** on Raspberry PI ******************************************************
+all the following steps could be done by a ssh session from local machine
+  ssh root@ip
+    password = root
+
+change root password
+  passwd
+
+add a user account
+  useradd -m -g users -s /bin/bash USERNAME
+
+change user password
+  passwd USERNAME
+
+login as USERNAME
+  su USERNAME
+
+update system an install additional packages
+  sudo pacman -Syu bash-completion i2c-tools wireless_tools yaourt sudo netcfg avahi nss-mdns boost yaourt fakeroot
+
+set default location
+  sudo nano /etc/locale-gen
+    uncomment:
+      en_US.UTF-8 UTF-8
+      en_US ISO-8895-1
+  sudo locale-gen
+  
+install wimax wifi usb stick
+  yaourt dkms-8192cu
+    add 'armv6h' to "arch=('i686' 'x86_64')" in PKGBUILD
+    
+setup wlan
+  sudo cp /etc/network.d/example/wireless-wpa /etc/network.d/ESSID
+  sudo nano /etc/network.d/ESSID
+    change "ESSID"
+    change "KEY"
+  
+setup avahi to access per ssh and hostname.local
+  sudo systemctl enable avahi-daemon.service
+  sudo nano /etc/nsswitch.conf
+    change: "hosts: files dns myhostname"
+         -> "hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4 $HOSTNAME"
+  
+load i2c-dev kernel module from startup
+  sudo nano /etc/modules-load.d/snd-bcm2835.conf 
+    insert: 
+      snd-bcm2835
+      i2c-dev
+      i2c-bcm2708
+
+give user rights to access i2c devices
+  sudo nano /etc/udev/rules.d/91-local.rules
+    insert:
+      KERNEL=="i2c-[0-9]*", MODE="0666"
+
+save and reboot
+  sudo reboot
+  
+******** on LOCAL MACHINE *****************************************************
+add ssh public key to RPi (from local machine)
+  ssh-copy-id user@ip
