@@ -32,6 +32,10 @@ nbproject/private/
 moc_*
 ui_*.h
 
+#ignore eagle backup files
+*.s#*
+*.b#*
+
 #except this file
 !.gitignore
 
