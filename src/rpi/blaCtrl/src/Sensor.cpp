@@ -15,8 +15,16 @@ Sensor::Sensor() {
 }
 
 Sensor::Sensor(const char* devName, pthread_mutex_t *mutex) {
-	m_i2cConnection = new I2c(devName);
+	m_LSM303 = new LSM303(devName);
+	m_LSM303->init(LSM303DLHC_DEVICE, LSM303_SA0_A_HIGH);
+	m_LSM303->enableDefault();
+
+	m_L3G = new L3G(devName);
+	m_L3G->init();
+	m_L3G->enableDefault();
+
 	m_mutex = mutex;
+	m_intervalMs = 1000;
 	printf("size of sensorData: %d\n", sizeof(m_sensorData));
 }
 
@@ -30,7 +38,6 @@ void Sensor::setMeasuringInterval(int intervalMs) {
 
 	m_intervalMs = intervalMs;
 	if (intervalMs) {
-		m_initHardware();
 	    pthread_create(&m_threadTimer, NULL, p, this);
 	}
 }
@@ -49,6 +56,7 @@ void Sensor::m_readDataSensor(boost::asio::deadline_timer* t) {
 
 	if(m_intervalMs) {
 		pthread_mutex_lock(m_mutex);
+		    /*
 			// read accelerometer data from sensor
 			m_i2cConnection->receive(I2C_ACCEL_ADDR, I2C_ACCEL_X, &m_sensorData.accel[0], sizeof(m_sensorData.accel));
 			// read gyroscope data from sensor
@@ -60,29 +68,36 @@ void Sensor::m_readDataSensor(boost::asio::deadline_timer* t) {
 			// read potentiometer data from sensor
 			m_i2cConnection ->receive(I2C_POTI_ADDR, I2C_POTI_CTRL, &temp, 3);
 			m_sensorData.poti = (int8_t) (temp - 128);
+			*/
+		{
+			// Accelerometer
+			m_LSM303->readAcc();
+			m_LSM303->getAcc(m_sensorData.accel);
+
+			// Magnetometer
+			m_LSM303->readMag();
+		    m_LSM303->getMag(m_sensorData.mag);
+
+
+		    std::cout << "accX:\t" << m_sensorData.accel.x << std::endl << "accY:\t" << m_sensorData.accel.y
+                      << std::endl << "accZ:\t" << m_sensorData.accel.z << std::endl << std::endl;
+
+
+		    // Magnetometer
+			m_L3G->read();
+			m_L3G->getGyro(m_sensorData.gyro);
+
+			std::cout << "gyroX:\t" << m_sensorData.gyro.x << std::endl << "gyroY:\t" << m_sensorData.gyro.y
+			                      << std::endl << "gyroZ:\t" << m_sensorData.gyro.z << std::endl << std::endl;
+
+
+		    sleep(1);
+		}
 		pthread_mutex_unlock(m_mutex);
 		t->expires_at(t->expires_at() + boost::posix_time::milliseconds(m_intervalMs));
 		t->async_wait(boost::bind(&Sensor::m_readDataSensor, this, t));
 		//printf("gyro: %d\n",m_sensorData.gyro[0]); //TODO remove this line after commissioning
 	}
-}
-
-void Sensor::m_initHardware() {
-	uint8_t temp;
-
-	temp = 0x08;
-	m_i2cConnection->send(I2C_ACCEL_ADDR, I2C_ACCEL_POWER_CTL, &temp, sizeof(temp));
-	m_i2cConnection->send(I2C_ACCEL_ADDR, I2C_ACCEL_DATA_FORMAT, &temp, sizeof(temp));
-
-	temp = 0x80;
-	m_i2cConnection->send(I2C_GYRO_ADDR, I2C_GYRO_POWER_CTL, &temp, sizeof(temp));
-	temp = 0x09;
-	m_i2cConnection->send(I2C_GYRO_ADDR, I2C_GYRO_DLPF_FS, &temp, sizeof(temp));
-	temp = 0x02;
-	m_i2cConnection->send(I2C_GYRO_ADDR, I2C_GYRO_POWER_CTL, &temp, sizeof(temp));
-
-	temp = 0x00;
-	m_i2cConnection->send(I2C_MAG_ADDR, I2C_MAG_MODE, &temp, sizeof(temp));
 }
 
 void Sensor::m_swapInt16(int16_t &inout) {

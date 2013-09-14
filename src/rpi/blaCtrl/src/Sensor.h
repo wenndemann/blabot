@@ -14,7 +14,12 @@
 #include <pthread.h>
 
 
-#include "i2c.h"
+//#include "i2c.h"
+
+#include "LSM303.h"
+#include "L3G.h"
+
+
 #include "defs.h"
 
 
@@ -33,7 +38,8 @@ public:
 	int getMeasuringInterval() { return m_intervalMs; }
 
 private:
-	I2c *m_i2cConnection;
+	LSM303 *m_LSM303;
+	L3G *m_L3G;
 	pthread_t m_threadTimer;
 	sensorData_s m_sensorData;
 	pthread_mutex_t *m_mutex;
@@ -42,7 +48,6 @@ private:
 	void* m_callbackTimer(void* arg);
 	void m_readDataSensor(boost::asio::deadline_timer* t);
 	void m_swapInt16(int16_t &inout);
-	void m_initHardware();
 };
 
 #endif /* SENSOR_H_ */

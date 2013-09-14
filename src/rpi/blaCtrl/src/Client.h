@@ -39,7 +39,6 @@ private:
 
 	void* m_sendSensorData(void* arg);
 	void* m_parseTcpIp(void* arg);
-
 };
 
 #endif /* CLIENT_H_ */

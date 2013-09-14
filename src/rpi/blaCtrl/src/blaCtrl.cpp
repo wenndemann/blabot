@@ -28,7 +28,7 @@
 pthread_mutex_t g_sensorMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t g_clientMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t g_pthreadTcpIpListen;
-Sensor g_sensor("/dev/i2c-0", &g_sensorMutex);
+Sensor g_sensor("/dev/i2c-1", &g_sensorMutex);
 std::map<int, Client> g_clientMap;
 void* tcpIpListen(void* arg);
 
