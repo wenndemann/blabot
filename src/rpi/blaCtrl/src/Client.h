@@ -8,12 +8,13 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-#include <pthread.h>
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include "SensorHandler.h"
+#include <pthread.h>
+
 #include "defs.h"
+#include "SensorHandler.h"
 
 class Client {
 public:

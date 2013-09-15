@@ -108,8 +108,7 @@ public:
     enum magGain { magGain_13 = 0x20, magGain_19 = 0x40, magGain_25 = 0x60, magGain_40 = 0x80,
                    magGain_47 = 0xA0, magGain_56 = 0xC0, magGain_81 = 0xE0 };
 
-    LSM303(void);
-    LSM303(const char* devName);
+    LSM303();
     
     void init(byte device = LSM303_DEVICE_AUTO, byte sa0_a = LSM303_SA0_A_AUTO);
     byte getDeviceType(void) { return _device; }

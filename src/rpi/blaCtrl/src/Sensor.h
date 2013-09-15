@@ -8,6 +8,7 @@
 #ifndef SENSOR_H_
 #define SENSOR_H_
 
+#include <boost/noncopyable.hpp>
 #include "i2c.h"
 
 typedef uint8_t byte;
@@ -16,7 +17,8 @@ class Sensor : boost::noncopyable
 {
   public:
 
-	struct vectorInt16 {
+	struct vectorInt16
+	{
 		vectorInt16() {x = y = z = 0;}
 		vectorInt16(int16_t X, int16_t Y, int16_t Z) {x=X;y=Y;z=Z;}
 		int16_t x, y, z;
@@ -38,6 +40,7 @@ class Sensor : boost::noncopyable
 	Sensor(const char* devName);
 	virtual ~Sensor();
 
+	void setI2c(const I2c& I2cHandler);
 	virtual void enableDefault(void) = 0;
 
 	void writeReg(byte addr, byte reg, byte value);
@@ -51,7 +54,7 @@ class Sensor : boost::noncopyable
 	static void vector_normalize(vector& v);
 
   protected:
-	I2c* m_I2cHandler;
+	I2c m_I2cHandler;
 };
 
 #endif /* SENSOR_H_ */

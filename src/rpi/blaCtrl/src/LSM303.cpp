@@ -11,12 +11,7 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-LSM303::LSM303(void)
-{
-  LSM303("/dev/i2c-1");
-}
-
-LSM303::LSM303(const char* devName) : Sensor(devName)
+LSM303::LSM303()
 {
   // These are just some values for a particular unit; it is recommended that
   // a calibration be done for your particular unit.
@@ -104,27 +99,24 @@ void LSM303::enableDefault(void)
   writeMagReg(LSM303_MR_REG_M, 0x00);
 }
 
-void writeAcc(byte addr, byte reg, byte value);
-    byte readAcc(byte addr, byte reg);
-
 // Writes an accelerometer register
 void LSM303::writeAccReg(byte reg, byte value)
 {
-  m_I2cHandler->send(acc_address, reg, &value, sizeof(byte));
+  m_I2cHandler.send(acc_address, reg, &value, sizeof(byte));
 }
 
 // Reads an accelerometer register
 byte LSM303::readAccReg(byte reg)
 {
   byte value;
-  m_I2cHandler->receive(acc_address, reg, &value, sizeof(byte));
+  m_I2cHandler.receive(acc_address, reg, &value, sizeof(byte));
   return value;
 }
 
 // Writes a magnetometer register
 void LSM303::writeMagReg(byte reg, byte value)
 {
-  m_I2cHandler->send(MAG_ADDRESS, reg, &value, sizeof(byte));
+  m_I2cHandler.send(MAG_ADDRESS, reg, &value, sizeof(byte));
 }
 
 // Reads a magnetometer register
@@ -152,7 +144,7 @@ byte LSM303::readMagReg(int reg)
     }
   }
 
-  m_I2cHandler->receive(MAG_ADDRESS, reg, &value, sizeof(byte));
+  m_I2cHandler.receive(MAG_ADDRESS, reg, &value, sizeof(byte));
 
   return value;
 }
@@ -160,13 +152,13 @@ byte LSM303::readMagReg(int reg)
 void LSM303::setMagGain(magGain value)
 {
   byte val = (byte) value;
-  m_I2cHandler->send(MAG_ADDRESS, LSM303_CRB_REG_M, &val, sizeof(byte));
+  m_I2cHandler.send(MAG_ADDRESS, LSM303_CRB_REG_M, &val, sizeof(byte));
 }
 
 // Reads the 3 accelerometer channels and stores them in vector a
 void LSM303::readAcc(void)
 {
-  m_I2cHandler->receive(acc_address, LSM303_OUT_X_L_A | (1 << 7), &m_dataAccRaw, 3*sizeof(int16_t));
+  m_I2cHandler.receive(acc_address, LSM303_OUT_X_L_A | (1 << 7), &m_dataAccRaw, 3*sizeof(int16_t));
   m_dataAcc = vector(m_dataAccRaw);
   vector_normalize(m_dataAcc);
 }
@@ -174,7 +166,7 @@ void LSM303::readAcc(void)
 // Reads the 3 magnetometer channels and stores them in vector m
 void LSM303::readMag(void)
 {
-  m_I2cHandler->receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMagRaw, 3*sizeof(int16_t));
+  m_I2cHandler.receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMagRaw, 3*sizeof(int16_t));
   m_dataMag = vector(m_dataMagRaw);
   vector_normalize(m_dataMag);
 }
@@ -236,7 +228,7 @@ int LSM303::heading(vector from)
 byte LSM303::detectSA0_A(void)
 {
   byte value;
-  int iRet = m_I2cHandler->receive(
+  int iRet = m_I2cHandler.receive(
     ACC_ADDRESS_SA0_A_HIGH, LSM303_CTRL_REG1_A, &value, sizeof(byte));
 
   if (iRet >= 0)

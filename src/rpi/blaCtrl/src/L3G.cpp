@@ -14,11 +14,6 @@
 
 L3G::L3G()
 {
-  L3G("/dev/i2c-1");
-}
-
-L3G::L3G(const char* devName) : Sensor(devName)
-{
   _device = 0;
   address = 0;
 }
@@ -76,14 +71,14 @@ void L3G::enableDefault(void)
 // Writes a gyro register
 void L3G::writeReg(byte reg, byte value)
 {
-  m_I2cHandler->send(address, reg, &value, sizeof(byte));
+  m_I2cHandler.send(address, reg, &value, sizeof(byte));
 }
 
 // Reads a gyro register
 byte L3G::readReg(byte reg)
 {
   byte value;
-  m_I2cHandler->receive(address, reg, &value, sizeof(byte));
+  m_I2cHandler.receive(address, reg, &value, sizeof(byte));
 
   return value;
 }
@@ -91,7 +86,7 @@ byte L3G::readReg(byte reg)
 // Reads the 3 gyro channels and stores them in vector g
 void L3G::read()
 {
-  m_I2cHandler->receive(address, L3G_OUT_X_L | (1 << 7), &m_dataGyroRaw, 3*sizeof(int16_t));
+  m_I2cHandler.receive(address, L3G_OUT_X_L | (1 << 7), &m_dataGyroRaw, 3*sizeof(int16_t));
   m_dataGyro = vector(m_dataGyroRaw);
   vector_normalize(m_dataGyro);
 }

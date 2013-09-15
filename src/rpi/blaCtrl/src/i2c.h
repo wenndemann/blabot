@@ -19,8 +19,11 @@
 class I2c {
   public:
     I2c();
-    I2c(const char* devName);
+    I2c(const I2c& other);
+    I2c& operator = (const I2c& other);
+    ~I2c();
     
+    bool openDev(const char* devName);
     int receive(uint8_t i2cAddr, uint8_t i2cCmd, void* data, uint8_t length);
     int send(uint8_t i2cAddr, uint8_t i2cCmd, void* data, uint8_t length);
   

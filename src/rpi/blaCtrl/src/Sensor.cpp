@@ -7,26 +7,34 @@
 
 #include "Sensor.h"
 
-Sensor::Sensor() {
+Sensor::Sensor()
+{
 }
 
-Sensor::Sensor(const char* devName) {
-	m_I2cHandler = new I2c(devName);
+Sensor::Sensor(const char* devName)
+{
+
 }
 
-Sensor::~Sensor() {
+Sensor::~Sensor()
+{
 	// TODO Auto-generated destructor stub
+}
+
+void Sensor::setI2c(const I2c& I2cHandler)
+{
+	m_I2cHandler = I2cHandler;
 }
 
 void Sensor::writeReg(byte addr, byte reg, byte value)
 {
-	m_I2cHandler->send(addr, reg, &value, sizeof(byte));
+	m_I2cHandler.send(addr, reg, &value, sizeof(byte));
 }
 
 byte Sensor::readReg(byte addr, byte reg)
 {
 	byte value;
-    m_I2cHandler->receive(addr, reg, &value, sizeof(byte));
+    m_I2cHandler.receive(addr, reg, &value, sizeof(byte));
     return value;
 }
 

@@ -13,33 +13,26 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <pthread.h>
 
-
-//#include "i2c.h"
+#include "defs.h"
+#include "i2c.h"
 
 #include "LSM303.h"
 #include "L3G.h"
 
-
-#include "defs.h"
-
-
-
 class SensorHandler {
-
-
-
 public:
 	SensorHandler();
 	SensorHandler(const char* devName, pthread_mutex_t *mutex);
 	virtual ~SensorHandler();
 
 	void setMeasuringInterval(int intervalMs);
-	sensorData_s* getSensorData() {return &m_sensorData;}
+	sensorData_s* getSensorData() { return &m_sensorData; }
 	int getMeasuringInterval() { return m_intervalMs; }
 
 private:
-	LSM303 *m_LSM303;
-	L3G *m_L3G;
+	I2c m_I2cHandler;
+	LSM303 m_LSM303;
+	L3G m_L3G;
 	pthread_t m_threadTimer;
 	sensorData_s m_sensorData;
 	pthread_mutex_t *m_mutex;

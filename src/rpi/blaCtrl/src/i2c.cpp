@@ -1,16 +1,34 @@
 #include "i2c.h"
 
-I2c::I2c() {
-  I2c("/dev/i2c-1");
+I2c::I2c()
+{
+	m_fd = 0;
 }
 
-I2c::I2c(const char* devName) {
+I2c::I2c(const I2c& other)
+{
+	this->m_fd = other.m_fd;
+}
+
+I2c& I2c::operator = (const I2c& other)
+{
+	this->m_fd = other.m_fd;
+	return *this;
+}
+
+I2c::~I2c() {}
+
+bool I2c::openDev(const char* devName)
+{
 	m_mutex.lock();
 	if((m_fd = open(devName, O_RDWR)) < 0) {
-		__DIE("I2C open error! %d\n", m_fd);
+		__WNG("I2C open error! %d\n", m_fd);
+		m_mutex.unlock();
+		return false;
 	}
 	//std::cout << "m_fd = " << m_fd <<  " devname " << devName << std::endl;
 	m_mutex.unlock();
+	return true;
 }
 
 int I2c::send(uint8_t i2cAddr, uint8_t i2cCmd, void* data, uint8_t length) {

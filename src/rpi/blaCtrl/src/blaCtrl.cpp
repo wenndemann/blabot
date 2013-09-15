@@ -11,6 +11,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+//#include <boost/thread.hpp>
+
 #include <math.h>
 
 //#include <signal.h>
@@ -24,7 +26,6 @@
 
 #define SEMM_NUM_THREADS 8
 
-
 pthread_mutex_t g_sensorMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t g_clientMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t g_pthreadTcpIpListen;
@@ -37,12 +38,7 @@ int main(int argc, char** argv)
 	unsigned int nClientsInMap;
 	std::map<int,Client>::iterator it;
 
-	if(pthread_mutex_init(&g_sensorMutex, NULL))
-		perror("Faild to initialize sensor mutex");
-	if(pthread_mutex_init(&g_clientMutex, NULL))
-		perror("Faild to initialize client mutex");
-
-	printf("timer init\n");
+	//printf("timer init\n");
 	g_sensor.setMeasuringInterval(10);
 
 	if (pthread_create(&g_pthreadTcpIpListen, 0, tcpIpListen, NULL) < 0) {

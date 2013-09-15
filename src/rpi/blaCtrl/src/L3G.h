@@ -55,8 +55,7 @@ class L3G : public Sensor
 {
   public:
 
-	L3G();
-    L3G(const char* devName);
+    L3G();
 
     bool init(byte device = L3G_DEVICE_AUTO, byte sa0 = L3G_SA0_AUTO);
 
