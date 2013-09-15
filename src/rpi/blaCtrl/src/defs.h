@@ -1,25 +1,23 @@
 #ifndef DEFS_H_
 #define DEFS_H_
 
-//#define SEMM_MSG_LENGTH 256
-
 // I2C DEFINES
-#define I2C_ACCEL_ADDR 0x19
-#define I2C_ACCEL_POWER_CTL 0x2d
-#define I2C_ACCEL_DATA_FORMAT 0x31
-#define I2C_ACCEL_X 0x32
-
-#define I2C_GYRO_ADDR 0x6b
-#define I2C_GYRO_POWER_CTL	0x3e
-#define I2C_GYRO_DLPF_FS	0x16
-#define I2C_GYRO_X 0x1d
-
-#define I2C_MAG_ADDR 	0x1e
-#define I2C_MAG_MODE	  0x02
-#define I2C_MAG_X	0x03
-
-#define I2C_POTI_ADDR 0x48
-#define I2C_POTI_CTRL 0x00
+//#define I2C_ACCEL_ADDR 0x19
+//#define I2C_ACCEL_POWER_CTL 0x2d
+//#define I2C_ACCEL_DATA_FORMAT 0x31
+//#define I2C_ACCEL_X 0x32
+//
+//#define I2C_GYRO_ADDR 0x6b
+//#define I2C_GYRO_POWER_CTL	0x3e
+//#define I2C_GYRO_DLPF_FS	0x16
+//#define I2C_GYRO_X 0x1d
+//
+//#define I2C_MAG_ADDR 	0x1e
+//#define I2C_MAG_MODE	  0x02
+//#define I2C_MAG_X	0x03
+//
+//#define I2C_POTI_ADDR 0x48
+//#define I2C_POTI_CTRL 0x00
 
 // TCP/IP DEFINES
 // SC = server -> client

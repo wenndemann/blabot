@@ -17,9 +17,8 @@ L3G::L3G()
   L3G("/dev/i2c-1");
 }
 
-L3G::L3G(const char* devName)
+L3G::L3G(const char* devName) : Sensor(devName)
 {
-  m_I2cHandler = new I2c(devName);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////

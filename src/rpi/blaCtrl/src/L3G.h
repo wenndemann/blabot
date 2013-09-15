@@ -1,7 +1,9 @@
 #ifndef L3G_h
 #define L3G_h
 
-#include "i2c.h"
+// includes
+
+#include "Sensor.h"
 
 // device types
 
@@ -51,22 +53,21 @@
 
 typedef uint8_t byte;
 
-class L3G
+class L3G : public Sensor
 {
   public:
+
 	struct data {
 		data() {x = y = z = 0;}
 		int16_t x, y, z;
 	};
 
-    typedef struct vector
-    {
-      float x, y, z;
-    } vector;
+	struct vector
+	{
+	  float x, y, z;
+	};
 
-    vector g; // gyro angular velocity readings
-
-    L3G();
+	L3G();
     L3G(const char* devName);
 
 
@@ -97,8 +98,7 @@ class L3G
       bool autoDetectAddress(void);
 
       data m_dataGyro;
-
-	  I2c* m_I2cHandler;
+      vector m_vecGyro;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 // includes
 
-#include "i2c.h"
+#include "Sensor.h"
 
 // device types
 
@@ -94,24 +94,22 @@
 
 typedef uint8_t byte;
 
-class LSM303 : public boost::noncopyable
+class LSM303 : public Sensor
 {
   public:
 
 	struct data {
 		data() {x = y = z = 0;}
+		data(int16_t X, int16_t Y, int16_t Z) {x=X;y=Y;z=Z;}
 		int16_t x, y, z;
 	};
 
-    typedef struct vector
-    {
-      float x, y, z;
-    } vector;
-
-    vector a; // accelerometer readings
-    vector m; // magnetometer readings
-    vector m_max; // maximum magnetometer values, used for calibration
-    vector m_min; // minimum magnetometer values, used for calibration
+	struct vector
+	{
+		vector() {x = y = z = 0.0f;}
+		vector(float X, float Y, float Z) {x=X;y=Y;z=Z;}
+		float x, y, z;
+	};
 
     byte last_status; // status of last I2C transmission
     
@@ -179,8 +177,8 @@ class LSM303 : public boost::noncopyable
 
     data m_dataAcc;
     data m_dataMag;
-
-    I2c* m_I2cHandler;
+    data m_maxMag;
+    data m_minMag;
 };
 
 #endif

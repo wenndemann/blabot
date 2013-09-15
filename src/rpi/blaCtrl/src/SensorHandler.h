@@ -1,12 +1,12 @@
 /*
- * Sensor.h
+ * SensorHandler.h
  *
  *  Created on: Mar 14, 2013
  *      Author: reinhard
  */
 
-#ifndef SENSOR_H_
-#define SENSOR_H_
+#ifndef SENSORHANDLER_H_
+#define SENSORHANDLER_H_
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -24,14 +24,14 @@
 
 
 
-class Sensor {
+class SensorHandler {
 
 
 
 public:
-	Sensor();
-	Sensor(const char* devName, pthread_mutex_t *mutex);
-	virtual ~Sensor();
+	SensorHandler();
+	SensorHandler(const char* devName, pthread_mutex_t *mutex);
+	virtual ~SensorHandler();
 
 	void setMeasuringInterval(int intervalMs);
 	sensorData_s* getSensorData() {return &m_sensorData;}
@@ -50,4 +50,4 @@ private:
 	void m_swapInt16(int16_t &inout);
 };
 
-#endif /* SENSOR_H_ */
+#endif /* SENSORHANDLER_H_ */

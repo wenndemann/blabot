@@ -12,7 +12,7 @@
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include "Sensor.h"
+#include "SensorHandler.h"
 #include "defs.h"
 
 class Client {
@@ -20,7 +20,7 @@ public:
 	Client();
 	virtual ~Client();
 
-	void setSensor(Sensor *sensor) { m_sensor = sensor; }
+	void setSensor(SensorHandler *sensor) { m_sensor = sensor; }
 	void setFd(int fd) { m_fd = fd; }
 	void setSensorMutex(pthread_mutex_t *sensorMutex) {m_sensorMutex = sensorMutex; }
 	void setClientMutex(pthread_mutex_t *clientMutex) {m_clientMutex = clientMutex; }
@@ -29,7 +29,7 @@ public:
 	void run();
 
 private:
-	Sensor *m_sensor;
+	SensorHandler *m_sensor;
 	int m_fd;
 	pthread_mutex_t *m_sensorMutex;
 	pthread_mutex_t *m_clientMutex;

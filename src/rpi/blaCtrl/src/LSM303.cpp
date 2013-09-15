@@ -16,14 +16,12 @@ LSM303::LSM303(void)
   LSM303("/dev/i2c-1");
 }
 
-LSM303::LSM303(const char* devName)
+LSM303::LSM303(const char* devName) : Sensor(devName)
 {
-  m_I2cHandler = new I2c(devName);
-
   // These are just some values for a particular unit; it is recommended that
   // a calibration be done for your particular unit.
-  m_max.x = +540; m_max.y = +500; m_max.z = 180;
-  m_min.x = -520; m_min.y = -570; m_min.z = -770;
+  m_maxMag.x = +540; m_maxMag.y = +500; m_maxMag.z = 180;
+  m_minMag.x = -520; m_minMag.y = -570; m_minMag.z = -770;
 
   _device = LSM303_DEVICE_AUTO;
   acc_address = ACC_ADDRESS_SA0_A_HIGH;
@@ -82,6 +80,7 @@ void LSM303::init(byte device, byte sa0_a)
         acc_address = ACC_ADDRESS_SA0_A_LOW;
         _device = (readMagReg(LSM303_WHO_AM_I_M) == 0x3C) ? LSM303DLM_DEVICE : LSM303DLH_DEVICE;
       }
+      break;
   }
 }
 
@@ -182,7 +181,7 @@ void LSM303::read(void)
 // is pointing.
 int LSM303::heading(void)
 {
-  return heading((vector){0,-1,0});
+  return heading(vector(0.0f,-1.0f,0.0f));
 }
 
 // Returns the angular difference in the horizontal plane between the
@@ -199,11 +198,20 @@ int LSM303::heading(void)
 int LSM303::heading(vector from)
 {
     // shift and scale
-    m.x = (m.x - m_min.x) / (m_max.x - m_min.x) * 2 - 1.0;
-    m.y = (m.y - m_min.y) / (m_max.y - m_min.y) * 2 - 1.0;
-    m.z = (m.z - m_min.z) / (m_max.z - m_min.z) * 2 - 1.0;
+    m_dataMag.x = (m_dataMag.x - m_minMag.x) / (m_maxMag.x - m_minMag.x) * 2 - 1.0;
+    m_dataMag.y = (m_dataMag.y - m_minMag.y) / (m_maxMag.y - m_minMag.y) * 2 - 1.0;
+    m_dataMag.z = (m_dataMag.z - m_minMag.z) / (m_maxMag.z - m_minMag.z) * 2 - 1.0;
 
-    vector temp_a = a;
+    vector temp_a;
+    temp_a.x = static_cast<float>(m_dataAcc.x);
+    temp_a.y = static_cast<float>(m_dataAcc.y);
+    temp_a.z = static_cast<float>(m_dataAcc.z);
+
+    vector temp_m;
+    temp_m.x = static_cast<float>(m_dataMag.x);
+	temp_m.y = static_cast<float>(m_dataMag.y);
+	temp_m.z = static_cast<float>(m_dataMag.z);
+
     // normalize
     vector_normalize(&temp_a);
     //vector_normalize(&m);
@@ -211,7 +219,7 @@ int LSM303::heading(vector from)
     // compute E and N
     vector E;
     vector N;
-    vector_cross(&m, &temp_a, &E);
+    vector_cross(&temp_m, &temp_a, &E);
     vector_normalize(&E);
     vector_cross(&temp_a, &E, &N);
 
