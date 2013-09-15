@@ -28,6 +28,8 @@ LSM303::LSM303(const char* devName) : Sensor(devName)
 
   io_timeout = 0;  // 0 = no timeout
   did_timeout = false;
+
+  last_status = 0;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -164,13 +166,17 @@ void LSM303::setMagGain(magGain value)
 // Reads the 3 accelerometer channels and stores them in vector a
 void LSM303::readAcc(void)
 {
-  m_I2cHandler->receive(acc_address, LSM303_OUT_X_L_A | (1 << 7), &m_dataAcc, 3*sizeof(uint16_t));
+  m_I2cHandler->receive(acc_address, LSM303_OUT_X_L_A | (1 << 7), &m_dataAccRaw, 3*sizeof(int16_t));
+  m_dataAcc = vector(m_dataAccRaw);
+  vector_normalize(m_dataAcc);
 }
 
 // Reads the 3 magnetometer channels and stores them in vector m
 void LSM303::readMag(void)
 {
-  m_I2cHandler->receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMag, sizeof(m_dataMag));
+  m_I2cHandler->receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMagRaw, 3*sizeof(int16_t));
+  m_dataMag = vector(m_dataMagRaw);
+  vector_normalize(m_dataMag);
 }
 
 // Reads all 6 channels of the LSM303 and stores them in the object variables
@@ -205,51 +211,24 @@ int LSM303::heading(vector from)
     m_dataMag.y = (m_dataMag.y - m_minMag.y) / (m_maxMag.y - m_minMag.y) * 2 - 1.0;
     m_dataMag.z = (m_dataMag.z - m_minMag.z) / (m_maxMag.z - m_minMag.z) * 2 - 1.0;
 
-    vector temp_a;
-    temp_a.x = static_cast<float>(m_dataAcc.x);
-    temp_a.y = static_cast<float>(m_dataAcc.y);
-    temp_a.z = static_cast<float>(m_dataAcc.z);
-
-    vector temp_m;
-    temp_m.x = static_cast<float>(m_dataMag.x);
-	temp_m.y = static_cast<float>(m_dataMag.y);
-	temp_m.z = static_cast<float>(m_dataMag.z);
+    vector temp_a(m_dataAcc);
+    vector temp_m(m_dataMag);
 
     // normalize
-    vector_normalize(&temp_a);
+    vector_normalize(temp_a);
     //vector_normalize(&m);
 
     // compute E and N
     vector E;
     vector N;
-    vector_cross(&temp_m, &temp_a, &E);
-    vector_normalize(&E);
-    vector_cross(&temp_a, &E, &N);
+    vector_cross(temp_m, temp_a, E);
+    vector_normalize(E);
+    vector_cross(temp_a, E, N);
 
     // compute heading
-    int heading = round(atan2(vector_dot(&E, &from), vector_dot(&N, &from)) * 180 / M_PI);
+    int heading = round(atan2(vector_dot(E, from), vector_dot(N, from)) * 180 / M_PI);
     if (heading < 0) heading += 360;
   return heading;
-}
-
-void LSM303::vector_cross(const vector *a,const vector *b, vector *out)
-{
-  out->x = a->y*b->z - a->z*b->y;
-  out->y = a->z*b->x - a->x*b->z;
-  out->z = a->x*b->y - a->y*b->x;
-}
-
-float LSM303::vector_dot(const vector *a,const vector *b)
-{
-  return a->x*b->x+a->y*b->y+a->z*b->z;
-}
-
-void LSM303::vector_normalize(vector *a)
-{
-  float mag = sqrt(vector_dot(a,a));
-  a->x /= mag;
-  a->y /= mag;
-  a->z /= mag;
 }
 
 // Private Methods //////////////////////////////////////////////////////////////

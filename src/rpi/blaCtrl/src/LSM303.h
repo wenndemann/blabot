@@ -94,24 +94,9 @@
 
 class LSM303 : public Sensor
 {
-  public:
+public:
 
-	struct data {
-		data() {x = y = z = 0;}
-		data(int16_t X, int16_t Y, int16_t Z) {x=X;y=Y;z=Z;}
-		int16_t x, y, z;
-	};
-
-	struct vector
-	{
-		vector() {x = y = z = 0.0f;}
-		vector(float X, float Y, float Z) {x=X;y=Y;z=Z;}
-		float x, y, z;
-	};
-
-    byte last_status; // status of last I2C transmission
-    
-    // HEX  = BIN          RANGE    GAIN X/Y/Z        GAIN Z
+	// HEX  = BIN          RANGE    GAIN X/Y/Z        GAIN Z
     //                               DLH (DLM/DLHC)    DLH (DLM/DLHC)
     // 0x20 = 0b00100000   ±1.3     1055 (1100)        950 (980) (default)
     // 0x40 = 0b01000000   ±1.9      795  (855)        710 (760)
@@ -149,34 +134,44 @@ class LSM303 : public Sensor
     int heading(void);
     int heading(vector from);
     
-    // vector functions
-    static void vector_cross(const vector *a, const vector *b, vector *out);
-    static float vector_dot(const vector *a,const vector *b);
-    static void vector_normalize(vector *a);
-    
     // get methods
-    void getAcc(data& dataAcc) { dataAcc = m_dataAcc; }
-    int16_t getAccX(void) { return m_dataAcc.x; }
-    int16_t getAccY(void) { return m_dataAcc.y; }
-    int16_t getAccZ(void) { return m_dataAcc.z; }
+    void getAccRaw(vectorInt16& dataAccRaw) { dataAccRaw = m_dataAccRaw; }
+    int16_t getAccXRaw(void) { return m_dataAccRaw.x; }
+    int16_t getAccYRaw(void) { return m_dataAccRaw.y; }
+    int16_t getAccZRaw(void) { return m_dataAccRaw.z; }
 
-    void getMag(data& dataMag) { memcpy(&dataMag,&m_dataMag,sizeof(m_dataMag)); }
-	int16_t getMagX(void) { return m_dataMag.x; }
-	int16_t getMagY(void) { return m_dataMag.y; }
-	int16_t getMagZ(void) { return m_dataMag.z; }
+    void getMagRaw(vectorInt16& dataMagRaw) { dataMagRaw = m_dataMagRaw; }
+	int16_t getMagXRaw(void) { return m_dataMagRaw.x; }
+	int16_t getMagYRaw(void) { return m_dataMagRaw.y; }
+	int16_t getMagZRaw(void) { return m_dataMagRaw.z; }
+
+	void getAcc(vector& dataAcc) { dataAcc = m_dataAcc; }
+	float getAccX(void) { return m_dataAcc.x; }
+	float getAccY(void) { return m_dataAcc.y; }
+	float getAccZ(void) { return m_dataAcc.z; }
+
+	void getMag(vector& dataMag) { dataMag = m_dataMag; }
+	float getMagX(void) { return m_dataMag.x; }
+	float getMagY(void) { return m_dataMag.y; }
+	float getMagZ(void) { return m_dataMag.z; }
 
   private:
     byte _device; // chip type (DLH, DLM, or DLHC)
     byte acc_address;
     unsigned int io_timeout;
     bool did_timeout;
+    byte last_status; // status of last I2C transmission
     
     byte detectSA0_A(void);
 
-    data m_dataAcc;
-    data m_dataMag;
-    data m_maxMag;
-    data m_minMag;
+    vectorInt16 m_dataAccRaw;
+    vectorInt16 m_dataMagRaw;
+
+    vector m_dataAcc;
+    vector m_dataMag;
+
+    vector m_maxMag;
+    vector m_minMag;
 };
 
 #endif

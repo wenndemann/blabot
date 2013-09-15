@@ -19,6 +19,8 @@ L3G::L3G()
 
 L3G::L3G(const char* devName) : Sensor(devName)
 {
+  _device = 0;
+  address = 0;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -89,27 +91,9 @@ byte L3G::readReg(byte reg)
 // Reads the 3 gyro channels and stores them in vector g
 void L3G::read()
 {
-  m_I2cHandler->receive(address, L3G_OUT_X_L | (1 << 7), &m_dataGyro, 3*sizeof(uint16_t));
-}
-
-void L3G::vector_cross(const vector *a,const vector *b, vector *out)
-{
-  out->x = a->y*b->z - a->z*b->y;
-  out->y = a->z*b->x - a->x*b->z;
-  out->z = a->x*b->y - a->y*b->x;
-}
-
-float L3G::vector_dot(const vector *a,const vector *b)
-{
-  return a->x*b->x+a->y*b->y+a->z*b->z;
-}
-
-void L3G::vector_normalize(vector *a)
-{
-  float mag = sqrt(vector_dot(a,a));
-  a->x /= mag;
-  a->y /= mag;
-  a->z /= mag;
+  m_I2cHandler->receive(address, L3G_OUT_X_L | (1 << 7), &m_dataGyroRaw, 3*sizeof(int16_t));
+  m_dataGyro = vector(m_dataGyroRaw);
+  vector_normalize(m_dataGyro);
 }
 
 // Private Methods //////////////////////////////////////////////////////////////

@@ -55,19 +55,8 @@ class L3G : public Sensor
 {
   public:
 
-	struct data {
-		data() {x = y = z = 0;}
-		int16_t x, y, z;
-	};
-
-	struct vector
-	{
-	  float x, y, z;
-	};
-
 	L3G();
     L3G(const char* devName);
-
 
     bool init(byte device = L3G_DEVICE_AUTO, byte sa0 = L3G_SA0_AUTO);
 
@@ -78,13 +67,13 @@ class L3G : public Sensor
 
     void read(void);
 
-    // vector functions
-    static void vector_cross(const vector *a, const vector *b, vector *out);
-    static float vector_dot(const vector *a,const vector *b);
-    static void vector_normalize(vector *a);
-
     // get methods
-    void getGyro(data& dataGyro) { memcpy(&dataGyro,&m_dataGyro,sizeof(m_dataGyro)); }
+    void getGyroRaw(vectorInt16& dataGyroRaw) { dataGyroRaw = m_dataGyroRaw; }
+	int16_t getGyroXRaw(void) { return m_dataGyroRaw.x; }
+	int16_t getGyroYRaw(void) { return m_dataGyroRaw.y; }
+	int16_t getGyroZRaw(void) { return m_dataGyroRaw.z; }
+
+	void getGyro(vector& dataGyro) { dataGyro = m_dataGyro; }
 	int16_t getGyroX(void) { return m_dataGyro.x; }
 	int16_t getGyroY(void) { return m_dataGyro.y; }
 	int16_t getGyroZ(void) { return m_dataGyro.z; }
@@ -95,8 +84,8 @@ class L3G : public Sensor
 
       bool autoDetectAddress(void);
 
-      data m_dataGyro;
-      vector m_vecGyro;
+      vectorInt16 m_dataGyroRaw;
+      vector m_dataGyro;
 };
 
 #endif

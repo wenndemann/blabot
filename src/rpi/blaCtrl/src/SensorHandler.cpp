@@ -72,11 +72,11 @@ void SensorHandler::m_readDataSensor(boost::asio::deadline_timer* t) {
 		{
 			// Accelerometer
 			m_LSM303->readAcc();
-			m_LSM303->getAcc(m_sensorData.accel);
+			m_LSM303->getAccRaw(m_sensorData.accel);
 
 			// Magnetometer
 			m_LSM303->readMag();
-		    m_LSM303->getMag(m_sensorData.mag);
+		    m_LSM303->getMagRaw(m_sensorData.mag);
 
 
 		    std::cout << "accX:\t" << m_sensorData.accel.x << std::endl << "accY:\t" << m_sensorData.accel.y
@@ -85,7 +85,7 @@ void SensorHandler::m_readDataSensor(boost::asio::deadline_timer* t) {
 
 		    // Magnetometer
 			m_L3G->read();
-			m_L3G->getGyro(m_sensorData.gyro);
+			m_L3G->getGyroRaw(m_sensorData.gyro);
 
 			std::cout << "gyroX:\t" << m_sensorData.gyro.x << std::endl << "gyroY:\t" << m_sensorData.gyro.y
 			                      << std::endl << "gyroZ:\t" << m_sensorData.gyro.z << std::endl << std::endl;

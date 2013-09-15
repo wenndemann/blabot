@@ -11,8 +11,13 @@ typedef  void* (Client::*Thread2Ptr)(void*);
 typedef  void* (*PthreadPtr)(void*);
 
 Client::Client() {
-	// TODO Auto-generated constructor stub
-
+	m_sensor = NULL;
+	m_sensorMutex = NULL;
+	m_clientMap = NULL;
+	m_fd = 0;
+	m_clientMutex = NULL;
+	m_pthreadSendSensorData = 0;
+	m_pthreadParseTcpIp = 0;
 }
 
 Client::~Client() {

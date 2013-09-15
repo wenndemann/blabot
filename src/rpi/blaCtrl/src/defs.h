@@ -1,6 +1,8 @@
 #ifndef DEFS_H_
 #define DEFS_H_
 
+#include "Sensor.h"
+
 // I2C DEFINES
 //#define I2C_ACCEL_ADDR 0x19
 //#define I2C_ACCEL_POWER_CTL 0x2d
@@ -33,7 +35,9 @@ struct tcp_data {
 	int newsockfd;
 	std::string name;
 
-	tcp_data() {}
+	tcp_data() {
+		newsockfd = 0;
+	}
 
 	tcp_data(int newsock)
 	{
@@ -43,9 +47,9 @@ struct tcp_data {
 
 
 struct sensorData_s {
-	LSM303::data accel;
-	L3G::data gyro;
-	LSM303::data mag;
+	Sensor::vectorInt16 accel;
+	Sensor::vectorInt16 gyro;
+	Sensor::vectorInt16 mag;
 	int8_t poti;
 };
 
