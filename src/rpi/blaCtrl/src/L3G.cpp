@@ -75,12 +75,6 @@ void L3G::enableDefault(void)
 void L3G::writeReg(byte reg, byte value)
 {
   m_I2cHandler->send(address, reg, &value, sizeof(byte));
-	/*
-  Wire.beginTransmission(address);
-  Wire.write(reg);
-  Wire.write(value);
-  Wire.endTransmission();
-  */
 }
 
 // Reads a gyro register
@@ -89,15 +83,6 @@ byte L3G::readReg(byte reg)
   byte value;
   m_I2cHandler->receive(address, reg, &value, sizeof(byte));
 
-  /*
-  Wire.beginTransmission(address);
-  Wire.write(reg);
-  Wire.endTransmission();
-  Wire.requestFrom(address, (byte)1);
-  value = Wire.read();
-  Wire.endTransmission();
-  */
-
   return value;
 }
 
@@ -105,28 +90,6 @@ byte L3G::readReg(byte reg)
 void L3G::read()
 {
   m_I2cHandler->receive(address, L3G_OUT_X_L | (1 << 7), &m_dataGyro, 3*sizeof(uint16_t));
-  /*
-  Wire.beginTransmission(address);
-  // assert the MSB of the address to get the gyro
-  // to do slave-transmit subaddress updating.
-  Wire.write(L3G_OUT_X_L | (1 << 7));
-  Wire.endTransmission();
-  Wire.requestFrom(address, (byte)6);
-
-  while (Wire.available() < 6);
-
-  uint8_t xlg = Wire.read();
-  uint8_t xhg = Wire.read();
-  uint8_t ylg = Wire.read();
-  uint8_t yhg = Wire.read();
-  uint8_t zlg = Wire.read();
-  uint8_t zhg = Wire.read();
-
-  // combine high and low bytes
-  g.x = (int16_t)(xhg << 8 | xlg);
-  g.y = (int16_t)(yhg << 8 | ylg);
-  g.z = (int16_t)(zhg << 8 | zlg);
-  */
 }
 
 void L3G::vector_cross(const vector *a,const vector *b, vector *out)

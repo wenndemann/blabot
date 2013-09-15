@@ -92,8 +92,6 @@
 #define LSM303DLHC_OUT_Y_H_M     0x07
 #define LSM303DLHC_OUT_Y_L_M     0x08
 
-typedef uint8_t byte;
-
 class LSM303 : public Sensor
 {
   public:
@@ -132,7 +130,7 @@ class LSM303 : public Sensor
     byte getDeviceType(void) { return _device; }
     
     void enableDefault(void);
-    
+
     void writeAccReg(byte reg, byte value);
     byte readAccReg(byte reg);
     void writeMagReg(byte reg, byte value);

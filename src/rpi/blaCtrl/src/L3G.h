@@ -51,8 +51,6 @@
 #define L3G_INT1_THS_ZL   0x37
 #define L3G_INT1_DURATION 0x38
 
-typedef uint8_t byte;
-
 class L3G : public Sensor
 {
   public:

@@ -102,6 +102,9 @@ void LSM303::enableDefault(void)
   writeMagReg(LSM303_MR_REG_M, 0x00);
 }
 
+void writeAcc(byte addr, byte reg, byte value);
+    byte readAcc(byte addr, byte reg);
+
 // Writes an accelerometer register
 void LSM303::writeAccReg(byte reg, byte value)
 {
