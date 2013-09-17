@@ -31,7 +31,9 @@ class I2c {
     void setCmd(uint8_t I2cCmd, int i2cAddr, int fd);
     
     int m_fd;
-    boost::mutex m_mutex;
+    bool m_bDev_0;
+    static boost::mutex m_mutex_0;
+    static boost::mutex m_mutex_1;
 };
 
 
