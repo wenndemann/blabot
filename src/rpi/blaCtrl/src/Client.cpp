@@ -11,7 +11,7 @@ typedef  void* (Client::*Thread2Ptr)(void*);
 typedef  void* (*PthreadPtr)(void*);
 
 Client::Client() {
-	m_sensor = NULL;
+	m_sensorHandler = NULL;
 	m_sensorMutex = NULL;
 	m_clientMap = NULL;
 	m_fd = 0;
@@ -42,21 +42,23 @@ void Client::run() {
 
 void* Client::m_sendSensorData(void* arg) {
 	int n = 0;
-	uint8_t buf[21];
+	uint8_t buf[1 + sizeof(sensorData_s)];
 	boost::asio::io_service io;
 	boost::asio::deadline_timer t(io, boost::posix_time::
-		milliseconds(m_sensor->getMeasuringInterval()));
+		milliseconds(m_sensorHandler->getMeasuringInterval()));
 
 	buf[0] = TCP_CMD_SENSOR_DATA_SC;
 	printf("start sending sensor data to %d\n", m_fd);
 	do {
 		t.wait();
 		t.expires_at(t.expires_at() + boost::posix_time::
-			milliseconds(m_sensor->getMeasuringInterval()));
-		pthread_mutex_lock(m_sensorMutex);
-			memcpy(&buf[1],m_sensor->getSensorData(),20);
-		pthread_mutex_unlock(m_sensorMutex);
-		n = write(m_fd, &buf, 21);
+			milliseconds(m_sensorHandler->getMeasuringInterval()));
+		{
+			pthread_mutex_lock(m_sensorMutex);
+			memcpy(&buf[1],m_sensorHandler->getSensorData(),sizeof(sensorData_s));
+			pthread_mutex_unlock(m_sensorMutex);
+		}
+		n = write(m_fd, &buf, 1 + sizeof(sensorData_s));
 		if (n < 0) {
 			if (errno == EBADF) break;
 			else {
@@ -85,19 +87,19 @@ void* Client::m_parseTcpIp(void* arg) {
 		}
 		switch(buf[0]) {
 		case TCP_CMD_SENSOR_INTERVAL_SC:
-			tempInt = m_sensor->getMeasuringInterval();
+			tempInt = m_sensorHandler->getMeasuringInterval();
 			buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
 			memcpy(&buf[1], &tempInt, sizeof(tempInt));
 			buf[3] = '\0';
 			write(m_fd, &buf, 4);
 			printf("send timer interval (%dms) to %d\n",
-				m_sensor->getMeasuringInterval(), m_fd);
+					m_sensorHandler->getMeasuringInterval(), m_fd);
 			break;
 		case TCP_CMD_SENSOR_INTERVAL_CS:
 			memcpy(&tempInt, &buf[1], sizeof(tempInt));
-			m_sensor->setMeasuringInterval(tempInt);
+			m_sensorHandler->setMeasuringInterval(tempInt);
 			printf("%d change sensor interval to %dms\n",
-				m_fd, m_sensor->getMeasuringInterval());
+				m_fd, m_sensorHandler->getMeasuringInterval());
 			break;
 		}
 	} while(n);

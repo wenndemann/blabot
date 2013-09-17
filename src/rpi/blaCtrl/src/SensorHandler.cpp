@@ -58,26 +58,28 @@ void SensorHandler::m_readDataSensor(boost::asio::deadline_timer* t) {
 		{
 			// Accelerometer
 			m_LSM303.readAcc();
-			m_LSM303.getAccRaw(m_sensorData.accel);
+			m_LSM303.getAcc(m_sensorData.acc);
+			m_LSM303.getAccRaw(m_sensorData.accRaw);
 
 			// Magnetometer
 			m_LSM303.readMag();
-		    m_LSM303.getMagRaw(m_sensorData.mag);
+		    m_LSM303.getMag(m_sensorData.mag);
+		    m_LSM303.getMagRaw(m_sensorData.magRaw);
 
-
-		    std::cout << "accX:\t" << m_sensorData.accel.x << std::endl << "accY:\t" << m_sensorData.accel.y
-                      << std::endl << "accZ:\t" << m_sensorData.accel.z << std::endl << std::endl;
+		    std::cout << "accX:\t" << m_sensorData.accRaw.x << std::endl << "accY:\t" << m_sensorData.accRaw.y
+                      << std::endl << "accZ:\t" << m_sensorData.accRaw.z << std::endl << std::endl;
 
 
 		    // Magnetometer
 			m_L3G.read();
-			m_L3G.getGyroRaw(m_sensorData.gyro);
+			m_L3G.getGyro(m_sensorData.gyro);
+			m_L3G.getGyroRaw(m_sensorData.gyroRaw);
 
-			std::cout << "gyroX:\t" << m_sensorData.gyro.x << std::endl << "gyroY:\t" << m_sensorData.gyro.y
-			                      << std::endl << "gyroZ:\t" << m_sensorData.gyro.z << std::endl << std::endl;
+			//std::cout << "gyroX:\t" << m_sensorData.gyro.x << std::endl << "gyroY:\t" << m_sensorData.gyro.y
+			//                      << std::endl << "gyroZ:\t" << m_sensorData.gyro.z << std::endl << std::endl;
 
 
-		    sleep(1); // TODO replace
+		    //sleep(1); // TODO replace
 		}
 		pthread_mutex_unlock(m_mutex);
 		t->expires_at(t->expires_at() + boost::posix_time::milliseconds(m_intervalMs));

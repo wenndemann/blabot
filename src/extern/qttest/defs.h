@@ -5,7 +5,7 @@
 #include <boost/cstdint.hpp>
 
 #define BB_TCPIP_PORT 6665
-#define BB_TCPIP_MSG_LENGTH 256
+#define BB_TCPIP_MSG_LENGTH 1024
 
 #define BB_PLOT_NCURVES 10
 #define BB_PLOT_DATA_LENGTH 100000
@@ -38,11 +38,57 @@ struct tcpData_s {
     }
 };
 
-struct sensorData_s {
-    int16_t accel[3];
-    int16_t gyro[3];
-    int16_t mag[3];
-    int8_t poti;
-};
+namespace SensorData
+{
+    struct vectorInt16
+    {
+        vectorInt16() {x = y = z = 0;}
+        vectorInt16(int16_t X, int16_t Y, int16_t Z) {x=X;y=Y;z=Z;}
+        void set(int16_t X, int16_t Y, int16_t Z) {x=X;y=Y;z=Z;}
+        int16_t x, y, z;
+    };
+
+    struct vector
+    {
+        vector() {x = y = z = 0.0f;}
+        vector(float X, float Y, float Z) {x=X;y=Y;z=Z;}
+        vector(const vectorInt16 &v16) {
+            x = static_cast<float>(v16.x);
+            y = static_cast<float>(v16.y);
+            z = static_cast<float>(v16.z);
+        }
+        void set(float X, float Y, float Z) {x=X;y=Y;z=Z;}
+        void set(int16_t X, int16_t Y, int16_t Z) {
+            x = static_cast<float>(X);
+            y = static_cast<float>(Y);
+            z = static_cast<float>(Z);
+        }
+
+        float x, y, z;
+
+        static float dot(const vector& a,const vector& b)
+        {
+          return a.x*b.x+a.y*b.y+a.z*b.z;
+        }
+
+        static void normalize(vector& v)
+        {
+            float mag = sqrt(dot(v,v));
+            v.x /= mag;
+            v.y /= mag;
+            v.z /= mag;
+        }
+    };
+
+    struct sensorData_s {
+        vectorInt16 accRaw;
+        vector acc;
+        vectorInt16 gyroRaw;
+        vector gyro;
+        vectorInt16 magRaw;
+        vector mag;
+        int8_t poti;
+    };
+} // namespace SensorData
 
 #endif // DEFS_H

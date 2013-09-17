@@ -159,8 +159,11 @@ void LSM303::setMagGain(magGain value)
 void LSM303::readAcc(void)
 {
   m_I2cHandler.receive(acc_address, LSM303_OUT_X_L_A | (1 << 7), &m_dataAccRaw, 3*sizeof(int16_t));
-  m_dataAcc = vector(m_dataAccRaw);
+  //std::cout << "Read accRaw: (" << m_dataAccRaw.x << "," << m_dataAccRaw.y << "," << m_dataAccRaw.z << ")" << std::endl;
+  m_dataAcc.set(m_dataAccRaw.x, m_dataAccRaw.y, m_dataAccRaw.z);
+  //std::cout << "Before Normalize Read acc: (" << m_dataAcc.x << "," << m_dataAcc.y << "," << m_dataAcc.z << ")" << std::endl;
   vector_normalize(m_dataAcc);
+  //std::cout << "After Normalize Read acc: (" << m_dataAcc.x << "," << m_dataAcc.y << "," << m_dataAcc.z << ")" << std::endl;
 }
 
 // Reads the 3 magnetometer channels and stores them in vector m

@@ -10,7 +10,7 @@
 boost::mutex g_mutex;
 //boost::thread threadTcpIp;
 
-sensorData_s sensorData;
+SensorData::sensorData_s sensorData;
 
 void* tcp_parse(void* arg);
 
@@ -101,15 +101,6 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
     int n = -1;
     int16_t tempInt;
     uint8_t buf[BB_TCPIP_MSG_LENGTH];
-    //tcpData_s tcpData = *((tcpData_s*) arg);
-
-    //int16_t blaCounter = 0;
-    //int64_t blaSum[3] = {0, 0, 0};
-
-    double accel[3];
-    double gyro[3];
-    double mag[3];
-    double poti;
 
     do
     {
@@ -127,20 +118,7 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
             case TCP_CMD_SENSOR_DATA_SC: {
                 memcpy(&sensorData, &buf[1], sizeof(sensorData));
 
-                accel[0] = double(sensorData.accel[0]);
-                accel[1] = double(-sensorData.accel[2]);
-                accel[2] = double(sensorData.accel[1]);
-
-                gyro[0]  = double(sensorData.gyro[0]);
-                gyro[1]  = double(-sensorData.gyro[2]);
-                gyro[2]  = double(sensorData.gyro[1]);
-
-                mag[0]   = double(sensorData.mag[0]);
-                mag[1]   = double(sensorData.mag[2]);
-                mag[2]   = double(sensorData.mag[1]);
-
-                poti = double(sensorData.poti);
-
+                /*
                 // manual measured gyro offset
                 gyro[0] -= 57.997;
                 gyro[1] -= -247.446;
@@ -152,26 +130,31 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
                     gyro[i] = gyro[i] / 180.0 * M_PI;
                     gyro[i] /= 4.0;
                 }
-
+                */
 
                 // save the measeured values
                 PlotManager *pM = tcpData.mainWindow->getPlotManagerPtr();
-                pM->addNewValue(0,accel[0]);
-                pM->addNewValue(1,accel[1]);
-                pM->addNewValue(2,accel[2]);
-                pM->addNewValue(3,gyro[0]);
-                pM->addNewValue(4,gyro[1]);
-                pM->addNewValue(5,gyro[2]);
-                pM->addNewValue(6,mag[0]);
-                pM->addNewValue(7,mag[1]);
-                pM->addNewValue(8,mag[2]);
-                pM->addNewValue(9,poti); //TODO
 
-                //simpleUpdate(tcpData.mainWindow, accel[0], accel[1], accel[2]);
+                sensorData.acc = SensorData::vector(sensorData.accRaw);
+                sensorData.gyro = SensorData::vector(sensorData.gyroRaw);
+                sensorData.mag = SensorData::vector(sensorData.magRaw);
 
-                //filterUpdate(gyro[0], gyro[1], gyro[2], accel[0], accel[1], accel[2]);
-                filterUpdate(gyro[0],0,0, 0, accel[1], accel[2]);
-                //filterUpdate(0.1,0,0,0,-1,0);
+                SensorData::vector::normalize(sensorData.acc);
+                SensorData::vector::normalize(sensorData.gyro);
+                SensorData::vector::normalize(sensorData.mag);
+
+                pM->addNewValue(0,static_cast<double>(sensorData.acc.x));
+                pM->addNewValue(1,static_cast<double>(sensorData.acc.y));
+                pM->addNewValue(2,static_cast<double>(sensorData.acc.z));
+                pM->addNewValue(3,static_cast<double>(sensorData.gyro.x));
+                pM->addNewValue(4,static_cast<double>(sensorData.gyro.y));
+                pM->addNewValue(5,static_cast<double>(sensorData.gyro.z));
+                pM->addNewValue(6,static_cast<double>(sensorData.mag.x));
+                pM->addNewValue(7,static_cast<double>(sensorData.mag.y));
+                pM->addNewValue(8,static_cast<double>(sensorData.mag.z));
+                pM->addNewValue(9,static_cast<double>(sensorData.poti)); //TODO
+
+                filterUpdate(sensorData.gyro.x,0,0, 0, sensorData.acc.y, sensorData.acc.z);
 
                 VisWidget *vW = tcpData.mainWindow->getWidgetVisualizationPtr();
                 //vW->setQuaternions(SEq_1, SEq_2, SEq_3, SEq_4);

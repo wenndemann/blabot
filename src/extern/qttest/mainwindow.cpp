@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // TCP/IP
     pTcpIp = new TCPIP(this);
+    connect(ui->lineEditIP, SIGNAL(returnPressed()), this, SLOT(tcpIpConnect()));
     connect(ui->pushButtonConnect, SIGNAL(clicked()), this, SLOT(tcpIpConnect()));
     connect(ui->pushButtonDisconnect, SIGNAL(clicked()), this, SLOT(tcpIpDisconnect()));
     connect(ui->toolButtonGetMeasuingInterval, SIGNAL(clicked()), this, SLOT(tcpIpGetMeasuringInterval()));

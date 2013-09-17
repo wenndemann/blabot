@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	std::map<int,Client>::iterator it;
 
 	//printf("timer init\n");
-	g_sensor.setMeasuringInterval(10);
+	g_sensor.setMeasuringInterval(50);
 
 	if (pthread_create(&g_pthreadTcpIpListen, 0, tcpIpListen, NULL) < 0) {
 		pthread_detach(g_pthreadTcpIpListen);

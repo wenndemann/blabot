@@ -24,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabControl">
        <attribute name="title">
@@ -122,7 +122,7 @@ right</string>
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEditIP">
              <property name="text">
-              <string>semmbox.local</string>
+              <string>192.168.0.19</string>
              </property>
             </widget>
            </item>
@@ -447,7 +447,7 @@ right</string>
                <number>10</number>
               </property>
               <property name="value">
-               <number>-500</number>
+               <number>-1</number>
               </property>
              </widget>
             </item>
@@ -486,7 +486,7 @@ right</string>
                <number>10</number>
               </property>
               <property name="value">
-               <number>500</number>
+               <number>1</number>
               </property>
              </widget>
             </item>
@@ -547,7 +547,11 @@ right</string>
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBoxPlotsPerSecond"/>
+             <widget class="QSpinBox" name="spinBoxPlotsPerSecond">
+              <property name="value">
+               <number>30</number>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="horizontalSpacer_3">
@@ -573,6 +577,9 @@ right</string>
              <widget class="QSpinBox" name="spinBoxDataShiftsPerSecond">
               <property name="maximum">
                <number>999</number>
+              </property>
+              <property name="value">
+               <number>50</number>
               </property>
              </widget>
             </item>

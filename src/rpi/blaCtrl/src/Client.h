@@ -21,7 +21,7 @@ public:
 	Client();
 	virtual ~Client();
 
-	void setSensor(SensorHandler *sensor) { m_sensor = sensor; }
+	void setSensor(SensorHandler *sensorHandler) { m_sensorHandler = sensorHandler; }
 	void setFd(int fd) { m_fd = fd; }
 	void setSensorMutex(pthread_mutex_t *sensorMutex) {m_sensorMutex = sensorMutex; }
 	void setClientMutex(pthread_mutex_t *clientMutex) {m_clientMutex = clientMutex; }
@@ -30,7 +30,7 @@ public:
 	void run();
 
 private:
-	SensorHandler *m_sensor;
+	SensorHandler *m_sensorHandler;
 	int m_fd;
 	pthread_mutex_t *m_sensorMutex;
 	pthread_mutex_t *m_clientMutex;
