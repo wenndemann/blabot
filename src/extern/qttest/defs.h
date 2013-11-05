@@ -2,6 +2,7 @@
 #define DEFS_H
 
 #include <string>
+#include <math.h>
 #include <boost/cstdint.hpp>
 
 #define BB_TCPIP_PORT 6665
@@ -77,6 +78,13 @@ namespace SensorData
             v.x /= mag;
             v.y /= mag;
             v.z /= mag;
+        }
+
+        static void cross(const vector& vecA, const vector& vecB, vector& vecDest)
+        {
+            vecDest.x = vecA.y * vecB.z - vecA.z * vecB.y;
+            vecDest.y = vecA.z * vecB.x - vecA.x * vecB.z;
+            vecDest.z = vecA.x * vecB.y - vecA.y * vecB.x;
         }
     };
 

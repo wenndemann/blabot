@@ -20,7 +20,6 @@ void VisWidget::initializeGL() {
     glClearColor(0.25,0.25,0.25,1);
     glEnable(GL_CULL_FACE);
 
-    m_fAngleRot = m_fNormX = m_fNormY = m_fNormZ = 0.0f;
     m_qtimer->start(25);
 
 }
@@ -29,111 +28,59 @@ void VisWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
-    glTranslatef(0.0f,0.0f,0.0f);
+    //glTranslatef(0.0f,0.0f,0.0f);
 
-
-    //m_qmutex->lock();
-    //glRotatef(m_fAngleRot, m_fNormX, m_fNormY, m_fNormZ);
-    //m_qmutex->unlock();
-
-
-    // -----
-    /*
-    double ESq_1, ESq_2, ESq_3, ESq_4;                              // quaternion describing orientation of sensor relative to earth
-    double ASq_1, ASq_2, ASq_3, ASq_4;                              // quaternion describing orientation of sensor relative to auxiliary frame
-    double r_11, r_12, r_13, r_21, r_22, r_23, r_31, r_32, r_33;    // rotation matrix elements
-
-    // world quaternions
-    double AEq_1, AEq_2, AEq_3, AEq_4;
-    AEq_1 = 1.0;
-    AEq_2 = AEq_3 = AEq_4 = 0.0;
-
-    // compute the quaternion conjugate
-    ESq_1 = scalar;
-    ESq_2 = -x;
-    ESq_3 = -y;
-    ESq_4 = -z;
-
-    // compute the quaternion product
-    ASq_1 = ESq_1 * AEq_1 - ESq_2 * AEq_2 - ESq_3 * AEq_3 - ESq_4 * AEq_4;
-    ASq_2 = ESq_1 * AEq_2 + ESq_2 * AEq_1 + ESq_3 * AEq_4 - ESq_4 * AEq_3;
-    ASq_3 = ESq_1 * AEq_3 - ESq_2 * AEq_4 + ESq_3 * AEq_1 + ESq_4 * AEq_2;
-    ASq_4 = ESq_1 * AEq_4 + ESq_2 * AEq_3 - ESq_3 * AEq_2 + ESq_4 * AEq_1;
-
-    /*
-    // compute rotation matrix from quaternion
-    r_11 = 2 * ASq_1 * ASq_1 - 1 + 2 * ASq_2 * ASq_2;
-    r_12 = 2 * (ASq_2 * ASq_3 + ASq_1 * ASq_4);
-    r_13 = 2 * (ASq_2 * ASq_4 - ASq_1 * ASq_3);
-    r_21 = 2 * (ASq_2 * ASq_3 - ASq_1 * ASq_4);
-    r_22 = 2 * ASq_1 * ASq_1 - 1 + 2 * ASq_3 * ASq_3;
-    r_23 = 2 * (ASq_3 * ASq_4 + ASq_1 * ASq_2);
-    r_31 = 2 * (ASq_2 * ASq_4 + ASq_1 * ASq_3);
-
-    r_32 = 2 * (ASq_3 * ASq_4 - ASq_1 * ASq_2);
-    r_33 = 2 * ASq_1 * ASq_1 - 1 + 2 * ASq_4 * ASq_4;
-
-    // back transformation
-    x = x*r_11 + y * r_21 + z * r_31;
-    y = x*r_12 + y * r_22 + z * r_32;
-    z = x*r_13 + y * r_23 + z * r_33;
-    */
-
-    //glRotatef(ASq_1, ASq_2, ASq_3, ASq_4);
-
-    // -----
-
-
-    //glRotatef(0, 0, 1, 0);
+    static float yaw, pitch, roll;
 
     m_qmutex->lock();
-
-    float scalar = m_qQuaternion.scalar() * 360; // M_PI;
-    float x = m_qQuaternion.x();
-    float y = m_qQuaternion.y();
-    float z = m_qQuaternion.z();
-
+        yaw = m_yaw; pitch = m_pitch; roll = m_roll;
     m_qmutex->unlock();
 
     glPushMatrix();
-        glRotatef(scalar, x, y, z);
+
+        m_yaw = 0.0f;
+        glRotatef(m_yaw,0,1,0); // rotate y
+        glRotatef(m_pitch,1,0,0); // rotate x
+        glRotatef(m_roll,0,0,1); // rotate z
+
         glBegin(GL_QUADS);
             glColor3f(0.0f,1.0f,0.0f);          // Set The Color To Green
-            glVertex3f( 1.0f, 1.0f,-1.0f);          // Top Right Of The Quad (Top)
-            glVertex3f(-1.0f, 1.0f,-1.0f);          // Top Left Of The Quad (Top)
-            glVertex3f(-1.0f, 1.0f, 1.0f);          // Bottom Left Of The Quad (Top)
-            glVertex3f( 1.0f, 1.0f, 1.0f);          // Bottom Right Of The Quad (Top)
+            glVertex3f( 1.0f, 0.1f,-2.0f);          // Top Right Of The Quad (Top)
+            glVertex3f(-1.0f, 0.1f,-2.0f);          // Top Left Of The Quad (Top)
+            glVertex3f(-1.0f, 0.1f, 2.0f);          // Bottom Left Of The Quad (Top)
+            glVertex3f( 1.0f, 0.1f, 2.0f);          // Bottom Right Of The Quad (Top)
 
             glColor3f(1.0f,0.5f,0.0f);          // Set The Color To Orange
-            glVertex3f( 1.0f,-1.0f, 1.0f);          // Top Right Of The Quad (Bottom)
-            glVertex3f(-1.0f,-1.0f, 1.0f);          // Top Left Of The Quad (Bottom)
-            glVertex3f(-1.0f,-1.0f,-1.0f);          // Bottom Left Of The Quad (Bottom)
-            glVertex3f( 1.0f,-1.0f,-1.0f);          // Bottom Right Of The Quad (Bottom)
+            glVertex3f( 1.0f,-0.1f, 2.0f);          // Top Right Of The Quad (Bottom)
+            glVertex3f(-1.0f,-0.1f, 2.0f);          // Top Left Of The Quad (Bottom)
+            glVertex3f(-1.0f,-0.1f,-2.0f);          // Bottom Left Of The Quad (Bottom)
+            glVertex3f( 1.0f,-0.1f,-2.0f);          // Bottom Right Of The Quad (Bottom)
 
             glColor3f(1.0f,0.0f,0.0f);          // Set The Color To Red
-            glVertex3f( 1.0f, 1.0f, 1.0f);          // Top Right Of The Quad (Front)
-            glVertex3f(-1.0f, 1.0f, 1.0f);          // Top Left Of The Quad (Front)
-            glVertex3f(-1.0f,-1.0f, 1.0f);          // Bottom Left Of The Quad (Front)
-            glVertex3f( 1.0f,-1.0f, 1.0f);          // Bottom Right Of The Quad (Front)
+            glVertex3f( 1.0f, 0.1f, 2.0f);          // Top Right Of The Quad (Front)
+            glVertex3f(-1.0f, 0.1f, 2.0f);          // Top Left Of The Quad (Front)
+            glVertex3f(-1.0f,-0.1f, 2.0f);          // Bottom Left Of The Quad (Front)
+            glVertex3f( 1.0f,-0.1f, 2.0f);          // Bottom Right Of The Quad (Front)
 
             glColor3f (1.0f,1.0f,0.0f);          // Set The Color To Yellow
-            glVertex3f( 1.0f,-1.0f,-1.0f);          // Bottom Left Of The Quad (Back)
-            glVertex3f(-1.0f,-1.0f,-1.0f);          // Bottom Right Of The Quad (Back)
-            glVertex3f(-1.0f, 1.0f,-1.0f);          // Top Right Of The Quad (Back)
-            glVertex3f( 1.0f, 1.0f,-1.0f);          // Top Left Of The Quad (Back)
+            glVertex3f( 1.0f,-0.1f,-2.0f);          // Bottom Left Of The Quad (Back)
+            glVertex3f(-1.0f,-0.1f,-2.0f);          // Bottom Right Of The Quad (Back)
+            glVertex3f(-1.0f, 0.1f,-2.0f);          // Top Right Of The Quad (Back)
+            glVertex3f( 1.0f, 0.1f,-2.0f);          // Top Left Of The Quad (Back)
 
             glColor3f(0.0f,0.0f,1.0f);          // Set The Color To Blue
-            glVertex3f(-1.0f, 1.0f, 1.0f);          // Top Right Of The Quad (Left)
-            glVertex3f(-1.0f, 1.0f,-1.0f);          // Top Left Of The Quad (Left)
-            glVertex3f(-1.0f,-1.0f,-1.0f);          // Bottom Left Of The Quad (Left)
-            glVertex3f(-1.0f,-1.0f, 1.0f);          // Bottom Right Of The Quad (Left)
+            glVertex3f(-1.0f, 0.1f, 2.0f);          // Top Right Of The Quad (Left)
+            glVertex3f(-1.0f, 0.1f,-2.0f);          // Top Left Of The Quad (Left)
+            glVertex3f(-1.0f,-0.1f,-2.0f);          // Bottom Left Of The Quad (Left)
+            glVertex3f(-1.0f,-0.1f, 2.0f);          // Bottom Right Of The Quad (Left)
 
             glColor3f(1.0f,0.0f,1.0f);          // Set The Color To Violet
-            glVertex3f( 1.0f, 1.0f,-1.0f);          // Top Right Of The Quad (Right)
-            glVertex3f( 1.0f, 1.0f, 1.0f);          // Top Left Of The Quad (Right)
-            glVertex3f( 1.0f,-1.0f, 1.0f);          // Bottom Left Of The Quad (Right)
-            glVertex3f( 1.0f,-1.0f,-1.0f);          // Bottom Right Of The Quad (Right)
-         glEnd();
+            glVertex3f( 1.0f, 0.1f,-2.0f);          // Top Right Of The Quad (Right)
+            glVertex3f( 1.0f, 0.1f, 2.0f);          // Top Left Of The Quad (Right)
+            glVertex3f( 1.0f,-0.1f, 2.0f);          // Bottom Left Of The Quad (Right)
+            glVertex3f( 1.0f,-0.1f,-2.0f);          // Bottom Right Of The Quad (Right)
+        glEnd();
+
     glPopMatrix();
 }
 
@@ -155,51 +102,68 @@ void VisWidget::resizeGL(int w, int h) {
     //glLoadIdentity();
 }
 
-void VisWidget::setRotation(float NormX, float NormY, float NormZ) {
+void VisWidget::setRotation(SensorData::sensorData_s data) {
+    //qDebug("setRotation()");
     if (m_qmutex->tryLock()) {
-        float fNorm = sqrt(pow(double(NormX), 2.0) + pow(double(NormY), 2.0) + pow(double(NormZ), 2.0));
-        float x = NormX / fNorm;
-        float y = NormY / fNorm;
-        float z = NormZ / fNorm;
 
-        m_fNormX = y * 0.0f - z * 1.0f;
-        m_fNormY = z * 0.0f - x * 0.0f;
-        m_fNormZ = x * 1.0f - y * 0.0f;
+        // PITCH _______________________________________________________________________
+        m_pitch = -atan2(data.acc.x, sqrt(data.acc.y*data.acc.y + data.acc.z*data.acc.z)) * 180.0 / M_PI;
+        //qDebug("setRotation() - pitch(%.2f)", m_pitch);
 
-        m_fAngleRot = acos((x * 0.0f + y * 1.0f + z * 0.0f) /
-                           (sqrt(pow(double(x), 2.0) + pow(double(y), 2.0) + pow(double(z), 2.0)) +
-                            sqrt(pow(double(0.0f), 2.0) + pow(double(1.0f), 2.0) + pow(double(0.0f), 2.0))));
-        m_fAngleRot = m_fAngleRot / M_PI * 180;
+        // ROLL ________________________________________________________________________
+        SensorData::vector accel(data.acc.x, data.acc.y, data.acc.z);
+        const static SensorData::vector xAxis(1.0,0.0,0.0);
+
+        SensorData::vector tmp1, tmp2;
+        SensorData::vector::cross(accel, xAxis, tmp1);
+        SensorData::vector::cross(xAxis, tmp1, tmp2);
+
+        m_roll = atan2(tmp2.y, tmp2.z) * 180.0 / M_PI;
+
+        // YAW _________________________________________________________________________
+        m_yaw = 0.0;
+
+
+        float mag_x;
+        float mag_y;
+        float cos_roll;
+        float sin_roll;
+        float cos_pitch;
+        float sin_pitch;
+        float MAG_Heading;
+
+        cos_roll = cos(m_roll);
+        sin_roll = sin(m_roll);
+        cos_pitch = cos(m_pitch);
+        sin_pitch = sin(m_pitch);
+
+        // Tilt compensated magnetic field X
+        mag_x = data.mag.x * cos_pitch + data.mag.y * sin_roll * sin_pitch + data.mag.z * cos_roll * sin_pitch;
+        // Tilt compensated magnetic field Y
+        mag_y = data.mag.y * cos_roll - data.mag.z * sin_roll;
+        // Magnetic Heading
+        MAG_Heading = atan2(-mag_y, mag_x);
+
+        m_roll = MAG_Heading * 180.0 / M_PI;
+
+
         m_qmutex->unlock();
+
     }
 }
 
-void VisWidget::setRotation(float AngleRot, float NormX, float NormY, float NormZ) {
-    if (m_qmutex->tryLock()) {
-
-        m_fNormX = NormX;
-        m_fNormY = NormY;
-        m_fNormZ = NormZ;
-        m_fAngleRot = AngleRot;
-
-        m_qmutex->unlock();
-    }
+void VisWidget::setEulerAngles(float pitch, float yaw, float roll) {
+    m_yaw = yaw; m_pitch = pitch; m_roll = roll;
 }
 
-void VisWidget::setQuaternions(float SEq_1, float SEq_2, float SEq_3, float SEq_4) {
-    if (m_qmutex->tryLock()) {
-
-        m_qQuaternion = QQuaternion(SEq_1, SEq_2, SEq_3, SEq_4);
-
-        m_fQuaternion_1 = SEq_1;
-        m_fQuaternion_2 = SEq_2;
-        m_fQuaternion_3 = SEq_3;
-        m_fQuaternion_4 = SEq_4;
-
-        m_qmutex->unlock();
-    }
+void VisWidget::setEulerX(int pitch) {
+    m_pitch = static_cast<float>(pitch);
 }
 
-void VisWidget::setQuaternions(QQuaternion *q) {
-    m_qQuaternion = *q;
+void VisWidget::setEulerY(int yaw) {
+    m_yaw = static_cast<float>(yaw);
+}
+
+void VisWidget::setEulerZ(int roll) {
+    m_roll = static_cast<float>(roll);
 }

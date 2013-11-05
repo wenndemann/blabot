@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "graphplotter.h"
 #include "widgetcurvecontrol.h"
+#include "defs.h"
 
 namespace Ui{
     class MainWindow;

@@ -32,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // other connections
     connect(ui->pushButtonScreenshot, SIGNAL(clicked()), this, SLOT(takeScreenshot()));
+
+    // euler angle slider
+    connect(ui->horizontalSliderX, SIGNAL(valueChanged(int)), ui->widgetVisualization, SLOT(setEulerX(int)));
+    connect(ui->horizontalSliderY, SIGNAL(valueChanged(int)), ui->widgetVisualization, SLOT(setEulerY(int)));
+    connect(ui->horizontalSliderZ, SIGNAL(valueChanged(int)), ui->widgetVisualization, SLOT(setEulerZ(int)));
 }
 
 MainWindow::~MainWindow()

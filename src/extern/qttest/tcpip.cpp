@@ -154,12 +154,15 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
                 pM->addNewValue(8,static_cast<double>(sensorData.mag.z));
                 pM->addNewValue(9,static_cast<double>(sensorData.poti)); //TODO
 
-                filterUpdate(sensorData.gyro.x,0,0, 0, sensorData.acc.y, sensorData.acc.z);
+                //filterUpdate(sensorData.gyro.x,0,0, 0, sensorData.acc.y, sensorData.acc.z);
 
                 VisWidget *vW = tcpData.mainWindow->getWidgetVisualizationPtr();
                 //vW->setQuaternions(SEq_1, SEq_2, SEq_3, SEq_4);
 
-                QQuaternion SEq(SEq_1, SEq_2, SEq_3, SEq_4);
+
+                //QQuaternion SEq(SEq_1, SEq_2, SEq_3, SEq_4);
+
+                /*
                 QQuaternion ESq = SEq.conjugate();
                 QQuaternion ASq;
                 ASq.setScalar(ESq.scalar()*ASq.scalar() - ESq.x()*ASq.x()      - ESq.y()*ASq.y()      - ESq.z()*ASq.z());
@@ -169,8 +172,14 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
 
                 vW->setQuaternions(&ASq);
                 tcpData.mainWindow->setQuaternions(&ASq);
-                //tcpData.mainWindow->setQuaternionVals(SEq.scalar()*360,result.x(),result.y(),result.z());
+                */
+                //QQuaternion SEq(1.0, sensorData.acc.x, sensorData.acc.y, sensorData.acc.z);
+                //vW->setQuaternions(&SEq);
 
+                tcpData.mainWindow->setQuaternionVals(1.0, sensorData.acc.x, sensorData.acc.y, sensorData.acc.z);
+                qDebug("sensorData: (%.1f,%.1f,%.1f)", sensorData.acc.x, sensorData.acc.y, sensorData.acc.z);
+
+                vW->setRotation(sensorData);
 
 
                 break;
@@ -220,9 +229,9 @@ void simpleUpdate(MainWindow* mW, float NormX, float NormY, float NormZ) {
     AngleRot = AngleRot / M_PI * 180;
 
 
-    mW->getWidgetVisualizationPtr()->setRotation(AngleRot, NormX, NormY, NormZ);
+    //mW->getWidgetVisualizationPtr()->setRotation(AngleRot, NormX, NormY, NormZ);
 
-    mW->setQuaternionVals(AngleRot, NormX, NormY, NormZ);
+    //mW->setQuaternionVals(AngleRot, NormX, NormY, NormZ);
 }
 
 void filterUpdate(double w_x, double w_y, double w_z, double a_x, double a_y, double a_z)

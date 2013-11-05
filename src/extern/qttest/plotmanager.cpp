@@ -103,7 +103,9 @@ void PlotManager::shift() {
             }
 
             if (i == 2) {
-                m_pUi->widgetVisualization->setRotation(accX, accY, accZ);
+                SensorData::sensorData_s data;
+                data.acc.x = accX; data.acc.y = accY; data.acc.z = accZ;
+                m_pUi->widgetVisualization->setRotation(data);
             }
 
         }
