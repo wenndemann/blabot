@@ -29,7 +29,7 @@
 pthread_mutex_t g_sensorMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t g_clientMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t g_pthreadTcpIpListen;
-SensorHandler g_sensor("/dev/i2c-1", &g_sensorMutex);
+SensorHandler g_sensor("/dev/i2c-0", &g_sensorMutex);
 std::map<int, Client> g_clientMap;
 void* tcpIpListen(void* arg);
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	std::map<int,Client>::iterator it;
 
 	//printf("timer init\n");
-	g_sensor.setMeasuringInterval(50);
+	g_sensor.setMeasuringInterval(100);
 
 	if (pthread_create(&g_pthreadTcpIpListen, 0, tcpIpListen, NULL) < 0) {
 		pthread_detach(g_pthreadTcpIpListen);

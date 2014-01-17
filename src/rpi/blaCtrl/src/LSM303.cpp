@@ -162,16 +162,23 @@ void LSM303::readAcc(void)
   //std::cout << "Read accRaw: (" << m_dataAccRaw.x << "," << m_dataAccRaw.y << "," << m_dataAccRaw.z << ")" << std::endl;
   m_dataAcc.set(m_dataAccRaw.x, m_dataAccRaw.y, m_dataAccRaw.z);
   //std::cout << "Before Normalize Read acc: (" << m_dataAcc.x << "," << m_dataAcc.y << "," << m_dataAcc.z << ")" << std::endl;
-  vector_normalize(m_dataAcc);
+  //vector_normalize(m_dataAcc);
   //std::cout << "After Normalize Read acc: (" << m_dataAcc.x << "," << m_dataAcc.y << "," << m_dataAcc.z << ")" << std::endl;
 }
 
 // Reads the 3 magnetometer channels and stores them in vector m
 void LSM303::readMag(void)
 {
-  m_I2cHandler.receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMagRaw, 3*sizeof(int16_t));
+  char vals[ 6 ];
+  m_I2cHandler.receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &vals[ 0 ], 6*sizeof(char));
+  m_dataMagRaw.x = (int16_t)(vals[0] << 8 | vals[1]);
+  m_dataMagRaw.y = (int16_t)(vals[4] << 8 | vals[5]);
+  m_dataMagRaw.z = (int16_t)(vals[2] << 8 | vals[3]);
+  //m_I2cHandler.receive(MAG_ADDRESS, LSM303_OUT_X_H_M, &m_dataMagRaw, 3*sizeof(int16_t));
   m_dataMag = vector(m_dataMagRaw);
   vector_normalize(m_dataMag);
+
+  //std::cout << "Mag: ( " << m_dataMagRaw.x << " , " << m_dataMagRaw.y << " , " << m_dataMagRaw.z << " )" << std::endl;
 }
 
 // Reads all 6 channels of the LSM303 and stores them in the object variables

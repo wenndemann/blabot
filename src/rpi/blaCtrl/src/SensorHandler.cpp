@@ -58,17 +58,21 @@ void SensorHandler::m_readDataSensor(boost::asio::deadline_timer* t) {
 		{
 			// Accelerometer
 			m_LSM303.readAcc();
-			m_LSM303.getAcc(m_sensorData.acc);
 			m_LSM303.getAccRaw(m_sensorData.accRaw);
+			m_LSM303.getAcc(m_sensorData.acc);
+
+			/*
+			std::cout << "accRawX:\t" << m_sensorData.accRaw.x << std::endl << "accRawY:\t" << m_sensorData.accRaw.y
+					  << std::endl << "accRawZ:\t" << m_sensorData.accRaw.z << std::endl << std::endl;
+
+			std::cout << "accX:\t" << m_sensorData.acc.x << std::endl << "accY:\t" << m_sensorData.acc.y
+					  << std::endl << "accZ:\t" << m_sensorData.acc.z << std::endl << std::endl;
+			*/
 
 			// Magnetometer
 			m_LSM303.readMag();
 		    m_LSM303.getMag(m_sensorData.mag);
 		    m_LSM303.getMagRaw(m_sensorData.magRaw);
-
-		    std::cout << "accX:\t" << m_sensorData.accRaw.x << std::endl << "accY:\t" << m_sensorData.accRaw.y
-                      << std::endl << "accZ:\t" << m_sensorData.accRaw.z << std::endl << std::endl;
-
 
 		    // Magnetometer
 			m_L3G.read();

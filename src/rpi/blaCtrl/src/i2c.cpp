@@ -26,7 +26,7 @@ I2c::~I2c() {}
 
 bool I2c::openDev(const char* devName)
 {
-    if(strcmp(devName,"/dev/i2c-1") == 0)
+    if(strcmp(devName,"/dev/i2c-0") == 0)
   		m_bDev_0 = false;
 
 	m_bDev_0? m_mutex_0.lock() : m_mutex_1.lock();

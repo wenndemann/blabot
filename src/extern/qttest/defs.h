@@ -51,6 +51,8 @@ namespace SensorData
 
     struct vector
     {
+        float x, y, z;
+
         vector() {x = y = z = 0.0f;}
         vector(float X, float Y, float Z) {x=X;y=Y;z=Z;}
         vector(const vectorInt16 &v16) {
@@ -58,14 +60,44 @@ namespace SensorData
             y = static_cast<float>(v16.y);
             z = static_cast<float>(v16.z);
         }
+
+        vector operator+ (const vector& rhs) {
+            return vector(
+                this->x + rhs.x,
+                this->y + rhs.y,
+                this->z + rhs.z );
+        }
+        void operator+= (const vector& other) {
+            this->add(other);
+        }
+
+        vector operator- (const vector& rhs) {
+            return vector(
+                this->x - rhs.x,
+                this->y - rhs.y,
+                this->z - rhs.z );
+        }
+        void operator-= (const vector& other) {
+            this->subtract(other);
+        }
+
+        void add(const vector& other) {
+            this->x += other.x;
+            this->y += other.y;
+            this->z += other.z;
+        }
+        void subtract(const vector& other) {
+            this->x -= other.x;
+            this->y -= other.y;
+            this->z -= other.z;
+        }
+
         void set(float X, float Y, float Z) {x=X;y=Y;z=Z;}
         void set(int16_t X, int16_t Y, int16_t Z) {
             x = static_cast<float>(X);
             y = static_cast<float>(Y);
             z = static_cast<float>(Z);
         }
-
-        float x, y, z;
 
         static float dot(const vector& a,const vector& b)
         {
