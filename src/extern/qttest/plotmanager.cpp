@@ -89,7 +89,7 @@ void PlotManager::shift() {
                 val = sin(offset + (i*M_PI)/3)*500;
             }
             else {
-                val = sin(offset+(i*M_2PI)/m_vecCurves.size())*500;
+                val = sin(offset+(i*2.0f*M_PI)/m_vecCurves.size())*500;
             }
 
             if (m_vecCurves[i])

@@ -11,14 +11,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qttest
 TEMPLATE = app
 
-win32{
-    INCLUDEPATH += C:/Qt/qwt/src
-    LIBS += -LC:/Qt/qwt/lib -lqwt
-    DEPENDPATH += C:/Qt/qwt/src
+DEFINES += QWT_DLL
+DEFINES += QT_DLL
 
-    INCLUDEPATH += C:/boost
-    LIBS += -LC:/boost/lib -llibboost_system -llibboost_thread
-    DEPENDPATH += C:/boost
+win32{
+
+    INCLUDEPATH += C:/Qt/qwt-6.1.0/src/
+    CONFIG(release) {
+        LIBS += -LC:/Qt/qwt-6.1.0/lib -lqwt
+    } else {
+        LIBS += -LC:/Qt/qwt-6.1.0/lib -lqwtd
+    }
+    DEPENDPATH += C:/Qt/qwt-6.1.0/src/
+
+    INCLUDEPATH += C:/Libs/boost_1_55_0
+    LIBS += -LC:/Libs/boost_1_55_0/lib32-msvc-10.0
+    DEPENDPATH += C:/Libs/boost_1_55_0
 }
 !win32{
     INCLUDEPATH += /usr/include/qwt

@@ -3,7 +3,10 @@
 
 #include <string>
 #include <math.h>
+
+#ifndef Q_MOC_RUN
 #include <boost/cstdint.hpp>
+#endif // Q_MOC_RUN
 
 #define BB_TCPIP_PORT 6665
 #define BB_TCPIP_MSG_LENGTH 1024

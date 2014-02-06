@@ -49,7 +49,7 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
             perror("ERROR opening socket");
             return;
         }
-        server = gethostbyname(ip.toAscii());
+        server = gethostbyname(ip.toLatin1());
         if (server == NULL)
         {
             perror("ERROR, no such host\n");
@@ -91,7 +91,7 @@ void TCPIP::connect(const QString& ip, int port, MainWindow *mainWindow)
 }
 
 void TCPIP::disconnect() {
-    close(m_fd);
+    _close(m_fd);
     m_isConnected = false;
 }
 
@@ -104,7 +104,7 @@ void TCPIP::tcp_parse(const tcpData_s& tcpData)
 
     do
     {
-        n = read(tcpData.sockfd,(void*) &buf, BB_TCPIP_MSG_LENGTH);
+        n = _read(tcpData.sockfd,(void*) &buf, BB_TCPIP_MSG_LENGTH);
         if (n < 0)
         {
             if(errno == EBADF) break;
@@ -201,7 +201,7 @@ void TCPIP::getMeasuringIntervalMs() {
     uint8_t buf[2];
     buf[0] = TCP_CMD_SENSOR_INTERVAL_SC;
     buf[1] = '\0';
-    if (write(m_fd, &buf, 2) < 0) perror("ERROR writing to socket: ");
+    if (_write(m_fd, &buf, 2) < 0) perror("ERROR writing to socket: ");
 }
 
 void TCPIP::setMeasuringIntervalMs(uint16_t val) {
@@ -209,7 +209,7 @@ void TCPIP::setMeasuringIntervalMs(uint16_t val) {
     buf[0] = TCP_CMD_SENSOR_INTERVAL_CS;
     memcpy(&buf[1], &val, sizeof(val));
     buf[3] = '\0';
-    if (write(m_fd, &buf, 4) < 0) perror("ERROR writing to socket: ");
+    if (_write(m_fd, &buf, 4) < 0) perror("ERROR writing to socket: ");
 }
 
 void simpleUpdate(MainWindow* mW, float NormX, float NormY, float NormZ) {

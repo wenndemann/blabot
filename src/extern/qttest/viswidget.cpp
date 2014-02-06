@@ -33,7 +33,9 @@ void VisWidget::paintGL() {
     static float yaw, pitch, roll;
 
     m_qmutex->lock();
-        yaw = m_yaw;            pitch = m_pitch;              roll = m_roll;
+        yaw   = 0.9f * m_yaw   + 0.1f * yaw;
+        pitch = 0.9f * m_pitch + 0.1f * pitch;
+        roll  = 0.9f * m_roll  + 0.1f * roll;
     m_qmutex->unlock();
 
     glPushMatrix();
@@ -169,9 +171,9 @@ void VisWidget::setRotation(SensorData::sensorData_s data) {
 
         // all finished -> to degree
 
-        m_pitch *= 180.0 / M_PI;
-        m_roll  *= 180.0 / M_PI;
-        m_yaw   *= 180.0 / M_PI;
+        m_pitch *= 180.0f / static_cast< float >( M_PI );
+        m_roll  *= 180.0f / static_cast< float >( M_PI );
+        m_yaw   *= 180.0f / static_cast< float >( M_PI );
 
         m_qmutex->unlock();
     }
